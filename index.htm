@@ -1,0 +1,1851 @@
+<!DOCTYPE html>
+<html lang="hi">
+  <head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+	<title>Sunny System | Complete Business Management</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    :root {
+      --bg-gradient: linear-gradient(145deg, #101f2c 0%, #0a1722 100%);
+      --card-bg: rgba(255, 255, 255, 0.96);
+      --form-bg: #fefaf5;
+      --text-color: #2c3e4e;
+      --heading-color: #1f5e74;
+      --primary: #ffb347;
+      --primary-dark: #e67e00;
+      --secondary: #1f5e74;
+      --font-size: 15px;
+    }
+
+    body {
+      background: var(--bg-gradient);
+      min-height: 100vh;
+      padding: 12px;
+      font-family: 'Segoe UI', Roboto, 'Inter', sans-serif;
+      transition: all 0.3s ease;
+      font-size: var(--font-size);
+      color: var(--text-color);
+    }
+
+    body.lang-en [data-hi] { display: none; }
+    body.lang-hi [data-en] { display: none; }
+
+    .app-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: var(--card-bg);
+      border-radius: 32px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+      overflow: hidden;
+      display: none;
+      transition: all 0.3s ease;
+    }
+
+    .form-card {
+      background: var(--form-bg);
+      border-radius: 16px;
+      padding: clamp(12px, 3vh, 16px);
+      margin-bottom: 16px;
+      transition: all 0.3s ease;
+    }
+
+    .brand-header {
+      background: linear-gradient(135deg, #0a2f44, #0b3b4f);
+      padding: 20px;
+      text-align: center;
+    }
+    .app-title {
+      font-size: clamp(24px, 6vw, 34px);
+      font-weight: 800;
+      color: white;
+      letter-spacing: 2px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+    .app-title span {
+      color: #ffb347;
+      font-size: clamp(26px, 7vw, 38px);
+    }
+    .tagline {
+      font-size: clamp(11px, 3vw, 13px);
+      color: #ffecb3;
+      margin-top: 10px;
+      display: inline-block;
+      background: rgba(0,0,0,0.3);
+      padding: 6px 20px;
+      border-radius: 50px;
+      animation: blinkPulse 1.2s step-start infinite, glowText 2s alternate infinite;
+      font-weight: 500;
+    }
+    @keyframes blinkPulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.6; }
+    }
+    @keyframes glowText {
+      0% { text-shadow: 0 0 0px #ffb347; box-shadow: 0 0 0px rgba(255,180,71,0); }
+      100% { text-shadow: 0 0 5px #ffb347; box-shadow: 0 0 8px rgba(255,180,71,0.3); }
+    }
+
+    .dashboard-grid {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: clamp(30px, 8vh, 60px) clamp(20px, 5vw, 40px);
+      gap: clamp(35px, 8vh, 60px);
+      background: rgba(0,0,0,0.02);
+      min-height: clamp(450px, 65vh, 550px);
+    }
+    .nav-row {
+      display: flex;
+      justify-content: center;
+      gap: clamp(40px, 10vw, 100px);
+      flex-wrap: wrap;
+    }
+    .nav-item-large {
+      background: linear-gradient(145deg, #ffffff, #e8e4dc);
+      border-radius: clamp(20px, 5vw, 28px);
+      padding: clamp(18px, 4vh, 28px) clamp(25px, 6vw, 35px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: clamp(12px, 2.5vh, 18px);
+      cursor: pointer;
+      min-width: clamp(120px, 22vw, 160px);
+      box-shadow: 10px 10px 20px rgba(0,0,0,0.15), -5px -5px 10px rgba(255,255,255,0.7);
+      transition: all 0.25s ease;
+    }
+    .nav-item-large:active {
+      transform: translateY(-5px);
+      box-shadow: 15px 15px 25px rgba(0,0,0,0.2);
+    }
+    .nav-item-large i {
+      font-size: clamp(42px, 10vw, 60px);
+      background: linear-gradient(145deg, #e67e00, #ffb347);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      filter: drop-shadow(3px 3px 5px rgba(0,0,0,0.2));
+    }
+    .nav-item-large span {
+      font-weight: 700;
+      color: #2c3e4e;
+      letter-spacing: 0.5px;
+    }
+
+    .page-container {
+      padding: clamp(12px, 3vh, 20px);
+      max-height: 70vh;
+      overflow-y: auto;
+    }
+    
+    @media (orientation: landscape) and (max-height: 500px) {
+      .dashboard-grid { flex-direction: row; flex-wrap: wrap; gap: 20px; padding: 15px; min-height: auto; }
+      .nav-row { flex-direction: row; gap: 25px; }
+      .nav-item-large { padding: 12px 18px; min-width: 100px; }
+      .nav-item-large i { font-size: 32px; }
+      .nav-item-large span { font-size: 12px; }
+      .page-container { max-height: 65vh; }
+    }
+
+    .form-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(0,0,0,0.1);
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .home-btn {
+      background: linear-gradient(145deg, #ffb347, #ff9800);
+      color: white;
+      padding: 8px 16px;
+      border-radius: 12px;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 3px 3px 6px rgba(0,0,0,0.2);
+    }
+    .home-btn:active { transform: translateY(2px); }
+
+    h2 {
+      border-left: 4px solid #ffb347;
+      padding-left: 12px;
+      margin-bottom: 15px;
+      color: var(--heading-color);
+    }
+    h3 {
+      margin: 15px 0 10px 0;
+      color: var(--heading-color);
+    }
+    
+    .input-group {
+      margin-bottom: 12px;
+    }
+    .input-group label {
+      font-weight: 700;
+      display: block;
+      margin-bottom: 4px;
+      color: var(--heading-color);
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: 1px solid #e0d6c8;
+      background: white;
+    }
+    button {
+      background: linear-gradient(145deg, #1f5e74, #0f3e4f);
+      color: white;
+      padding: 10px 16px;
+      border-radius: 10px;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      box-shadow: 3px 3px 6px rgba(0,0,0,0.2);
+      transition: all 0.1s ease;
+    }
+    button:active { transform: translateY(2px); }
+    .contact-row { display: flex; gap: 8px; flex-wrap: wrap; }
+    .contact-picker { 
+      background: linear-gradient(145deg, #25D366, #128C7E); 
+      flex: 1; 
+      display: flex; 
+      align-items: center; 
+      justify-content: center;
+      border-radius: 10px;
+      cursor: pointer;
+      padding: 10px;
+    }
+    
+    .table-wrapper {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      margin: 10px 0;
+      border-radius: 12px;
+    }
+    table { 
+      width: 100%; 
+      border-collapse: collapse;
+      min-width: 300px;
+    }
+    th, td { 
+      padding: 8px 6px; 
+      border-bottom: 1px solid #eee; 
+      text-align: left; 
+    }
+    th { background: #fff0e0; }
+    
+    .photo-box {
+      width: 100%;
+      height: clamp(100px, 25vh, 130px);
+      background: #f0f0f0;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      margin-bottom: 12px;
+      overflow: hidden;
+    }
+    
+    .timer-toast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(145deg, #2c2c2c, #1a1a1a);
+      color: white;
+      padding: 8px 20px;
+      border-radius: 40px;
+      z-index: 200;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      box-shadow: 5px 5px 12px rgba(0,0,0,0.3), -2px -2px 4px rgba(255,255,255,0.1);
+      backdrop-filter: blur(4px);
+    }
+    .timer-toast button {
+      background: linear-gradient(145deg, #ff4444, #cc0000);
+      padding: 4px 12px;
+      margin: 0;
+      border-radius: 30px;
+      box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+    }
+    
+    .action-buttons {
+      display: flex;
+      gap: 4px;
+      flex-wrap: wrap;
+    }
+    .action-buttons button {
+      padding: 4px 8px;
+      border-radius: 8px;
+      box-shadow: 2px 2px 4px rgba(0,0,0,0.15);
+    }
+    .view-btn { background: linear-gradient(145deg, #ffb347, #e67e00); }
+    .edit-btn { background: linear-gradient(145deg, #1f5e74, #0f3e4f); }
+    .delete-btn { background: linear-gradient(145deg, #b91c1c, #8b0000); }
+    .quick-delete-btn { background: linear-gradient(145deg, #ff4444, #cc0000); }
+    .pay-btn { background: linear-gradient(145deg, #2e7d32, #1b5e20); }
+    
+    .pdf-popup, .detail-popup {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(5px);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .popup-content {
+      background: linear-gradient(145deg, #fff, #f8f4f0);
+      border-radius: 24px;
+      width: 90%;
+      max-width: 400px;
+      max-height: 80vh;
+      overflow-y: auto;
+      padding: 20px;
+      box-shadow: 10px 10px 20px rgba(0,0,0,0.3);
+      animation: popupFadeIn 0.3s ease;
+    }
+    @keyframes popupFadeIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px 0;
+      border-bottom: 1px solid #eee;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+    .detail-label { 
+      font-weight: bold; 
+      color: #1f5e74; 
+      min-width: 130px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .detail-value { 
+      color: #333; 
+      flex: 1;
+      text-align: right;
+      font-weight: 500;
+    }
+    
+    .slider-container {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+    input[type="range"] {
+      flex: 1;
+      height: 6px;
+      -webkit-appearance: none;
+      background: #ffb347;
+      border-radius: 5px;
+      outline: none;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 20px;
+      height: 20px;
+      background: #ffb347;
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    }
+    
+    .search-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 15px;
+      flex-wrap: wrap;
+    }
+    .search-tab {
+      background: #e0d6c8;
+      padding: 8px 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .search-tab.active {
+      background: #ffb347;
+      color: white;
+    }
+    
+    .edit-form-popup {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(8px);
+      z-index: 1001;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow-y: auto;
+    }
+    .edit-form-content {
+      background: linear-gradient(145deg, #fff, #f8f4f0);
+      border-radius: 24px;
+      width: 90%;
+      max-width: 450px;
+      max-height: 85vh;
+      overflow-y: auto;
+      padding: 20px;
+      box-shadow: 20px 20px 40px rgba(0,0,0,0.4);
+      animation: popupFadeIn 0.3s ease;
+    }
+    
+    .color-option {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: all 0.2s;
+    }
+    .color-option:hover {
+      transform: scale(1.1);
+      border-color: white;
+    }
+    
+    .about-card {
+      text-align: center;
+    }
+    .about-card .detail-row {
+      justify-content: center;
+    }
+    .about-card .detail-label {
+      min-width: auto;
+    }
+    
+    /* Date Search Section */
+    .date-search-card {
+      background: linear-gradient(145deg, #e8f0fe, #dde6f5);
+    }
+    
+    @media (min-width: 768px) and (orientation: landscape) {
+      .dashboard-grid { flex-direction: row; justify-content: center; align-items: center; gap: 40px; }
+      .nav-row { flex-direction: column; gap: 40px; }
+      .nav-item-large { padding: 28px 38px; }
+      .nav-item-large i { font-size: 55px; }
+    }
+</style>
+  </head>
+  <body class="lang-hi">
+	<div class="login-overlay" id="loginOverlay">
+	  <div class="login-box">
+		<h2>🔐 <span data-hi>SUNNY SYSTEM</span><span data-en>SUNNY SYSTEM</span></h2>
+		<input type="text" id="loginUser" placeholder="User ID" value="admin">
+		<input type="password" id="loginPass" placeholder="Password" value="admin123">
+		<button onclick="verifyLogin()"><span data-hi>लॉगिन करें</span><span data-en>Login</span></button>
+		<div id="loginError" class="error-msg"></div>
+	  </div>
+	</div>
+
+	<div class="app-container" id="appContainer">
+	  <div class="brand-header">
+		<div class="app-title">SUNNY <span>SYSTEM</span></div>
+		<div class="tagline"><span data-hi>✨ प्रोफेशनल बिजनेस मैनेजमेंट | बिलिंग • स्टॉक • रिपेयर • रिपोर्ट ✨</span><span data-en>✨ Professional Business Management | Billing • Stock • Repair • Report ✨</span></div>
+	  </div>
+	  <div id="dynamicContent"></div>
+	</div>
+
+<script>
+  // ==================== LANGUAGE SYSTEM ====================
+  let currentLang = localStorage.getItem('sani_lang') || 'hi';
+  
+  function setLanguage(lang) {
+    currentLang = lang;
+    localStorage.setItem('sani_lang', lang);
+    if(lang === 'hi') {
+      document.body.classList.remove('lang-en');
+      document.body.classList.add('lang-hi');
+    } else {
+      document.body.classList.remove('lang-hi');
+      document.body.classList.add('lang-en');
+    }
+    if(currentPage === 'dashboard') renderDashboard();
+    else if(currentPage === 'billing') renderBillingPage();
+    else if(currentPage === 'stock') renderStockPage();
+    else if(currentPage === 'repair') renderRepairPage();
+    else if(currentPage === 'report') renderReportPage();
+    else if(currentPage === 'search') renderSearchPage();
+    else if(currentPage === 'setting') renderSettingPage();
+  }
+  
+  if(localStorage.getItem('sani_lang') === 'en') {
+    document.body.classList.remove('lang-hi');
+    document.body.classList.add('lang-en');
+  } else {
+    document.body.classList.remove('lang-en');
+    document.body.classList.add('lang-hi');
+  }
+
+  // ==================== PAGE STATE ====================
+  let currentPage = 'dashboard';
+  
+  function navigateTo(page) {
+    currentPage = page;
+    if(page === 'dashboard') renderDashboard();
+    else if(page === 'billing') renderBillingPage();
+    else if(page === 'stock') renderStockPage();
+    else if(page === 'repair') renderRepairPage();
+    else if(page === 'report') renderReportPage();
+    else if(page === 'search') renderSearchPage();
+    else if(page === 'setting') renderSettingPage();
+  }
+  
+  function goToHome() { navigateTo('dashboard'); }
+
+  // ==================== AUTH ====================
+  let currentPassword = "admin123";
+  let otpCode = null;
+  let pendingResetPhone = null;
+  
+  function sendOTP() {
+    let phone = document.getElementById('resetPhone')?.value;
+    if(!phone || phone.length < 10) {
+      alert(currentLang === 'hi' ? "सही मोबाइल नंबर डालें (10 अंक)" : "Enter valid mobile number (10 digits)");
+      return;
+    }
+    phone = phone.toString().replace(/\D/g, '');
+    if(phone.startsWith('0')) phone = phone.substring(1);
+    if(!phone.startsWith('91')) phone = '91' + phone;
+    
+    pendingResetPhone = phone;
+    otpCode = Math.floor(100000 + Math.random() * 900000).toString();
+    
+    alert(currentLang === 'hi' ? `⚠️ डेमो मोड: OTP ${otpCode}\n\nOTP इस नंबर पर भेजा जाएगा: ${phone}\n\nवास्तविक SMS के लिए backend API सेट करें।` : `⚠️ Demo Mode: OTP ${otpCode}\n\nOTP will be sent to: ${phone}\n\nFor real SMS, set up backend API.`);
+    
+    let otpSection = document.getElementById('otpSection');
+    if(otpSection) otpSection.style.display = 'block';
+  }
+  
+  function verifyOTPAndReset() {
+    let enteredOtp = document.getElementById('otpInput')?.value;
+    let newPass = document.getElementById('newPassword')?.value;
+    if(!enteredOtp || enteredOtp !== otpCode) {
+      alert(currentLang === 'hi' ? "गलत OTP!" : "Wrong OTP!");
+      return;
+    }
+    if(!newPass || newPass.length < 4) {
+      alert(currentLang === 'hi' ? "नया पासवर्ड कम से कम 4 अंक का होना चाहिए" : "Password must be at least 4 characters");
+      return;
+    }
+    currentPassword = newPass;
+    alert(currentLang === 'hi' ? "पासवर्ड सफलतापूर्वक बदल गया!" : "Password changed successfully!");
+    let otpSection = document.getElementById('otpSection');
+    if(otpSection) otpSection.style.display = 'none';
+    document.getElementById('resetPhone').value = '';
+    document.getElementById('otpInput').value = '';
+    document.getElementById('newPassword').value = '';
+  }
+  
+  function verifyLogin() {
+    let user = document.getElementById('loginUser').value;
+    let pass = document.getElementById('loginPass').value;
+    if(user === "admin" && pass === currentPassword) {
+      document.getElementById('loginOverlay').style.display = 'none';
+      document.getElementById('appContainer').style.display = 'block';
+      renderDashboard();
+    } else {
+      document.getElementById('loginError').innerText = currentLang === 'hi' ? "गलत यूजर आईडी या पासवर्ड!" : "Wrong username or password!";
+    }
+  }
+
+  // ==================== DATA ====================
+  let products = JSON.parse(localStorage.getItem('sunny_products')) || [
+    { id: "P001", name: "लेज़र डायोड", model: "LD-5W", desc: "5W लेज़र डायोड", purchase: 1200, selling: 1850, qty: 12, photo: "" },
+    { id: "P002", name: "कूलिंग फैन", model: "CF-12V", desc: "12V कूलिंग फैन", purchase: 300, selling: 450, qty: 28, photo: "" },
+    { id: "P003", name: "रेसिस्टर किट", model: "RK-100", desc: "100 पीस रेसिस्टर", purchase: 200, selling: 320, qty: 45, photo: "" }
+  ];
+  let invoices = JSON.parse(localStorage.getItem('sunny_invoices')) || [];
+  let repairJobs = JSON.parse(localStorage.getItem('sunny_repairs')) || [];
+  let currentCart = [];
+  let activeDeleteTimers = {};
+
+  function saveAllData() {
+    localStorage.setItem('sunny_products', JSON.stringify(products));
+    localStorage.setItem('sunny_invoices', JSON.stringify(invoices));
+    localStorage.setItem('sunny_repairs', JSON.stringify(repairJobs));
+  }
+
+  function getToday() { return new Date().toISOString().slice(0,10); }
+  function generateBillId() { return "BIL-" + (invoices.length+1).toString().padStart(4,'0'); }
+
+  // ==================== DELETE WITH TIMER ====================
+  function startDeleteTimer(itemId, type, itemName, callback) {
+    if(activeDeleteTimers[itemId]) {
+      clearTimeout(activeDeleteTimers[itemId]);
+      activeDeleteTimers[itemId] = null;
+    }
+    
+    let toast = document.createElement('div');
+    toast.className = 'timer-toast';
+    toast.id = `toast-${itemId}`;
+    toast.innerHTML = `
+      <span>⚠️ "${itemName.substring(0, 20)}" 10s में डिलीट होगा</span>
+      <button onclick="cancelDeleteTimer('${itemId}')">रद्द</button>
+      <button onclick="quickDeleteNow('${itemId}', '${type}')">अभी</button>
+    `;
+    document.body.appendChild(toast);
+    
+    let timer = setTimeout(() => {
+      callback();
+      let toastEl = document.getElementById(`toast-${itemId}`);
+      if(toastEl) toastEl.remove();
+      delete activeDeleteTimers[itemId];
+    }, 10000);
+    
+    activeDeleteTimers[itemId] = timer;
+  }
+  
+  function cancelDeleteTimer(itemId) {
+    if(activeDeleteTimers[itemId]) {
+      clearTimeout(activeDeleteTimers[itemId]);
+      delete activeDeleteTimers[itemId];
+    }
+    let toast = document.getElementById(`toast-${itemId}`);
+    if(toast) toast.remove();
+    alert(currentLang === 'hi' ? "डिलीट रद्द कर दिया गया!" : "Delete cancelled!");
+  }
+  
+  function quickDeleteNow(itemId, type) {
+    if(activeDeleteTimers[itemId]) {
+      clearTimeout(activeDeleteTimers[itemId]);
+      delete activeDeleteTimers[itemId];
+    }
+    let toast = document.getElementById(`toast-${itemId}`);
+    if(toast) toast.remove();
+    
+    if(type === 'stock') {
+      products = products.filter(p => p.id !== itemId);
+    } else if(type === 'billing') {
+      invoices = invoices.filter(i => i.id !== itemId);
+    } else if(type === 'repair') {
+      repairJobs = repairJobs.filter(r => r.id !== itemId);
+    }
+    saveAllData();
+    if(type === 'stock') performStockSearch();
+    else if(type === 'billing') performBillingSearch();
+    else if(type === 'repair') performRepairSearch();
+    else if(type === 'report') renderReportPage();
+    alert(currentLang === 'hi' ? "आइटम तुरंत डिलीट हो गया!" : "Item deleted immediately!");
+  }
+
+  // ==================== DASHBOARD ====================
+  function renderDashboard() {
+    document.getElementById("dynamicContent").innerHTML = `
+      <div class="dashboard-grid">
+        <div class="nav-row">
+          <div class="nav-item-large" onclick="navigateTo('billing')"><i class="fas fa-receipt"></i><span data-hi>बिलिंग</span><span data-en>Billing</span></div>
+          <div class="nav-item-large" onclick="navigateTo('stock')"><i class="fas fa-boxes"></i><span data-hi>स्टॉक</span><span data-en>Stock</span></div>
+        </div>
+        <div class="nav-row">
+          <div class="nav-item-large" onclick="navigateTo('repair')"><i class="fas fa-tools"></i><span data-hi>रिपेयर</span><span data-en>Repair</span></div>
+          <div class="nav-item-large" onclick="navigateTo('report')"><i class="fas fa-chart-pie"></i><span data-hi>रिपोर्ट</span><span data-en>Report</span></div>
+        </div>
+        <div class="nav-row">
+          <div class="nav-item-large" onclick="navigateTo('search')"><i class="fas fa-search"></i><span data-hi>खोज</span><span data-en>Search</span></div>
+          <div class="nav-item-large" onclick="navigateTo('setting')"><i class="fas fa-cog"></i><span data-hi>सेटिंग</span><span data-en>Setting</span></div>
+        </div>
+      </div>
+    `;
+  }
+
+  // ==================== BILLING PAGE ====================
+  window.pickBillingContact = function() {
+    if('contacts' in navigator && navigator.contacts) {
+      navigator.contacts.select(['name', 'tel'], { multiple: false })
+        .then(contacts => { if(contacts.length) {
+          document.getElementById('custName').value = contacts[0].name[0] || '';
+          document.getElementById('custMobile').value = contacts[0].tel[0] || '';
+        }}).catch(() => alert(currentLang === 'hi' ? "कॉन्टैक्ट एक्सेस नहीं हुआ" : "Contact access failed"));
+    } else alert(currentLang === 'hi' ? "कॉन्टैक्ट पिकर सपोर्ट नहीं" : "Contact picker not supported");
+  };
+  
+  window.addBillItem = function() {
+    let pid = document.getElementById('billProdSelect')?.value;
+    let qty = parseInt(document.getElementById('billQty')?.value);
+    if(!pid || qty<1) return alert(currentLang === 'hi' ? "सही मात्रा डालें" : "Enter valid quantity");
+    let prod = products.find(p=>p.id===pid);
+    if(!prod || prod.qty < qty) return alert(`${currentLang === 'hi' ? 'स्टॉक में' : 'Stock available:'} ${prod?.qty||0}`);
+    let exist = currentCart.find(i=>i.pid===pid);
+    if(exist) { exist.qty += qty; exist.total = exist.qty * exist.selling; }
+    else currentCart.push({ pid, name: prod.name, price: prod.selling, qty, total: prod.selling * qty });
+    renderBillingPage();
+  };
+  window.removeBillItem = function(idx) { currentCart.splice(idx,1); renderBillingPage(); };
+  window.clearBillForm = function() { 
+    if(confirm(currentLang === 'hi' ? "सारा फॉर्म क्लियर?" : "Clear entire form?")) { 
+      currentCart = [];
+      document.getElementById('custName').value = '';
+      document.getElementById('custMobile').value = '';
+      document.getElementById('billDate').value = getToday();
+      document.getElementById('paidAmount').value = 0;
+      renderBillingPage();
+    } 
+  };
+  
+  function showPDFPopup() {
+    let cust = document.getElementById('custName').value;
+    let mobile = document.getElementById('custMobile').value;
+    if(!cust) return alert(currentLang === 'hi' ? "ग्राहक नाम डालें" : "Enter customer name");
+    let total = currentCart.reduce((s,i)=>s+i.total,0);
+    let html = `<div style="padding:20px;"><h2>SUNNY SYSTEM</h2><p>Bill ID: ${generateBillId()}</p><p>Date: ${getToday()}</p><p>Customer: ${cust} | Mobile: ${mobile}</p><div class="table-wrapper"><table><thead><tr><th>Item</th><th>Price</th><th>Qty</th><th>Total</th></tr></thead><tbody>${currentCart.map(i=>`<tr><td>${i.name}<\/td><td>₹${i.price}<\/td><td>${i.qty}<\/td><td>₹${i.total}<\/td><\/tr>`).join('')}<tr><td colspan="3"><b>Total<\/b><\/td><td><b>₹${total}<\/b><\/td><\/tr><\/tbody></table><\/div><\/div>`;
+    let popup = document.createElement('div');
+    popup.className = 'pdf-popup';
+    popup.innerHTML = `<div class="popup-content"><div id="pdfPreview">${html}</div><div style="display:flex; gap:10px; margin-top:20px; flex-wrap:wrap;"><button onclick="downloadPDFnow()" style="flex:1;"><i class="fas fa-download"></i> PDF</button><button onclick="this.closest('.pdf-popup').remove()" style="flex:1; background:#666;">Close</button></div></div>`;
+    document.body.appendChild(popup);
+    window.pdfContent = html;
+  }
+  window.downloadPDFnow = function() {
+    let element = document.createElement('div');
+    element.innerHTML = window.pdfContent;
+    html2pdf().from(element).set({ margin: 0.5, filename: 'Invoice.pdf' }).save();
+    document.querySelector('.pdf-popup')?.remove();
+    let cust = document.getElementById('custName').value;
+    let mob = document.getElementById('custMobile').value;
+    let total = currentCart.reduce((s,i)=>s+i.total,0);
+    for(let it of currentCart) {
+      let p = products.find(pr=>pr.id===it.pid);
+      if(p) p.qty -= it.qty;
+    }
+    invoices.push({ id: generateBillId(), date: getToday(), customer: cust, mobile: mob, items: [...currentCart], total, paid: parseFloat(document.getElementById('paidAmount').value) || 0 });
+    currentCart = [];
+    saveAllData();
+    renderBillingPage();
+    alert(currentLang === 'hi' ? "बिल सेव और PDF तैयार!" : "Bill saved and PDF ready!");
+  };
+  
+  window.saveBillOnly = function() {
+    let cust = document.getElementById('custName').value;
+    let mob = document.getElementById('custMobile').value;
+    if(!cust || !mob) return alert(currentLang === 'hi' ? "ग्राहक नाम और मोबाइल जरूरी" : "Customer name and mobile required");
+    if(currentCart.length === 0) return alert(currentLang === 'hi' ? "कोई आइटम नहीं" : "No items in cart");
+    let total = currentCart.reduce((s,i)=>s+i.total,0);
+    for(let it of currentCart) {
+      let p = products.find(pr=>pr.id===it.pid);
+      if(p) p.qty -= it.qty;
+    }
+    invoices.push({ id: generateBillId(), date: getToday(), customer: cust, mobile: mob, items: [...currentCart], total, paid: parseFloat(document.getElementById('paidAmount').value) || 0 });
+    currentCart = [];
+    saveAllData();
+    renderBillingPage();
+    alert(currentLang === 'hi' ? "बिल सेव हो गया!" : "Bill saved successfully!");
+  };
+  
+  function renderBillingPage() {
+    let prodOpts = products.map(p=>`<option value="${p.id}">${p.name} (₹${p.selling}) stock:${p.qty}</option>`).join('');
+    let cartHtml = currentCart.map((it,idx)=>`<tr>
+        <td>${it.name}</td>
+        <td>₹${it.price}</td>
+        <td>${it.qty}</td>
+        <td>₹${it.total}</td>
+        <td><button onclick="removeBillItem(${idx})" style="background:#b91c1c; padding:6px 12px;"><i class="fas fa-trash"></i></button></td>
+      </tr>`).join('');
+    let totalAmt = currentCart.reduce((s,i)=>s+i.total,0);
+    document.getElementById("dynamicContent").innerHTML = `
+      <div class="page-container">
+        <div class="form-header">
+          <button class="home-btn" onclick="goToHome()"><i class="fas fa-home"></i> <span data-hi="होम">होम</span><span data-en="Home">Home</span></button>
+          <h2 style="border-left: none; margin:0;"><span data-hi>📄 बिलिंग सेक्शन</span><span data-en>📄 Billing Section</span></h2>
+        </div>
+        <div class="form-card">
+          <div class="input-group"><label><span data-hi="बिल ID (ऑटो)">बिल ID (ऑटो)</span><span data-en="Bill ID (Auto)">Bill ID (Auto)</span></label><input value="${generateBillId()}" readonly></div>
+          <div class="input-group"><label><span data-hi="तारीख">तारीख</span><span data-en="Date">Date</span></label><input type="date" id="billDate" value="${getToday()}"></div>
+          <div class="input-group"><label><span data-hi="ग्राहक नाम">ग्राहक नाम</span><span data-en="Customer Name">Customer Name</span></label><input type="text" id="custName" placeholder="Name"></div>
+          <div class="input-group"><label><span data-hi="मोबाइल">मोबाइल</span><span data-en="Mobile">Mobile</span></label><div class="contact-row"><input type="tel" id="custMobile" placeholder="9876543210"><div class="contact-picker" onclick="pickBillingContact()"><i class="fas fa-address-book"></i> <span data-hi="कॉन्टैक्ट">कॉन्टैक्ट</span><span data-en="Contact">Contact</span></div></div></div>
+        </div>
+        <div class="form-card">
+          <div class="input-group"><label><span data-hi="स्टॉक से आइटम">स्टॉक से आइटम</span><span data-en="Add Item from Stock">Add Item from Stock</span></label><select id="billProdSelect">${prodOpts}</select></div>
+          <div style="display:flex; gap:8px; flex-wrap:wrap;"><input type="number" id="billQty" value="1" style="flex:1;"><button onclick="addBillItem()" style="flex:1;"><i class="fas fa-plus"></i> <span data-hi="ऐड आइटम">ऐड आइटम</span><span data-en="Add Item">Add Item</span></button></div>
+        </div>
+        <div class="table-wrapper"><table><thead><tr><th><span data-hi="आइटम">आइटम</span><span data-en="Item">Item</span></th><th><span data-hi="कीमत">कीमत</span><span data-en="Price">Price</span></th><th><span data-hi="मात्रा">मात्रा</span><span data-en="Qty">Qty</span></th><th><span data-hi="कुल">कुल</span><span data-en="Total">Total</span></th><th></th></tr></thead><tbody>${cartHtml||'<tr><td colspan="5" style="text-align:center;">' + (currentLang === 'hi' ? 'कोई आइटम नहीं' : 'No items') + '<\/td><\/tr>'}</tbody></td></div>
+        <div class="form-card"><div class="input-group"><label><span data-hi="पेड अमाउंट">पेड अमाउंट</span><span data-en="Paid Amount">Paid Amount</span></label><input type="number" id="paidAmount" placeholder="Paid amount" value="0"></div><div class="input-group"><label><span data-hi="ड्यू अमाउंट (बकाया)">ड्यू अमाउंट (बकाया)</span><span data-en="Due Amount">Due Amount</span></label><input id="dueAmount" readonly value="${totalAmt}"></div></div>
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <button onclick="showPDFPopup()"><i class="fas fa-file-pdf"></i> <span data-hi="PDF प्रिंट">PDF प्रिंट</span><span data-en="Print PDF">Print PDF</span></button>
+          <button onclick="saveBillOnly()" style="background:#2e7d32;"><i class="fas fa-save"></i> <span data-hi="सेव बिल">सेव बिल</span><span data-en="Save Bill">Save Bill</span></button>
+          <button onclick="clearBillForm()" style="background:#b85c00;"><i class="fas fa-eraser"></i> <span data-hi="क्लियर">क्लियर</span><span data-en="Clear">Clear</span></button>
+        </div>
+        <h3><span data-hi="हाल के बिल">हाल के बिल</span><span data-en="Recent Bills">Recent Bills</span></h3>
+        <div class="table-wrapper"></table><thead><tr><th>ID</th><th><span data-hi="ग्राहक">ग्राहक</span><span data-en="Customer">Customer</span></th><th><span data-hi="तारीख">तारीख</span><span data-en="Date">Date</span></th><th><span data-hi="राशि">राशि</span><span data-en="Amount">Amount</span></th><th><span data-hi="पेड">पेड</span><span data-en="Paid">Paid</span></th><th><span data-hi="बकाया">बकाया</span><span data-en="Due">Due</span></th></tr></thead><tbody>${invoices.map(i=>`<tr>
+          <td>${i.id}<\/td>
+          <td>${i.customer}<\/td>
+          <td>${i.date}<\/td>
+          <td>₹${i.total}<\/td>
+          <td>₹${i.paid || 0}<\/td>
+          <td style="color:${(i.total - (i.paid||0)) > 0 ? 'red' : 'green'}">₹${(i.total - (i.paid||0))}<\/td>
+        </tr>`).join('')||'<tr><td colspan="6">' + (currentLang === 'hi' ? 'कोई बिल नहीं' : 'No bills') + '<\/td><\/tr>'}</tbody></table></div>
+      </div>
+    `;
+    let paidInput = document.getElementById('paidAmount');
+    if(paidInput) paidInput.oninput = function() { let due = totalAmt - (parseInt(this.value)||0); document.getElementById('dueAmount').value = due; };
+  }
+
+  // ==================== STOCK PAGE ====================
+  let selectedPhotoData = "";
+  
+  window.selectPhotoForStock = function() {
+    let input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.onchange = (e) => {
+      let file = e.target.files[0];
+      if(file) {
+        let reader = new FileReader();
+        reader.onload = function(ev) { 
+          selectedPhotoData = ev.target.result;
+          let preview = document.getElementById('stockPhotoPreview');
+          if(preview) preview.innerHTML = `<img src="${selectedPhotoData}" style="width:100%; height:100%; object-fit:cover;">`;
+        };
+        reader.readAsDataURL(file);
+      }
+    };
+    input.click();
+  };
+  
+  window.saveNewStockItem = function() {
+    let name = document.getElementById('stockName').value;
+    let model = document.getElementById('stockModel').value;
+    let desc = document.getElementById('stockDesc').value;
+    let purchase = parseFloat(document.getElementById('stockPurchase').value);
+    let selling = parseFloat(document.getElementById('stockSelling').value);
+    let qty = parseInt(document.getElementById('stockQty').value);
+    if(!name) return alert(currentLang === 'hi' ? "आइटम नाम जरूरी" : "Item name required");
+    products.push({ id: "P"+Date.now(), name, model, desc, purchase, selling, qty, photo: selectedPhotoData });
+    saveAllData();
+    selectedPhotoData = "";
+    renderStockPage();
+    alert(currentLang === 'hi' ? "आइटम सेव हो गया!" : "Item saved!");
+  };
+  
+  window.editStockFullForm = function(item) {
+    let popup = document.createElement('div');
+    popup.className = 'edit-form-popup';
+    popup.innerHTML = `
+      <div class="edit-form-content">
+        <h3 style="color:#ffb347;">✏️ <span data-hi="स्टॉक आइटम एडिट करें">स्टॉक आइटम एडिट करें</span><span data-en="Edit Stock Item">Edit Stock Item</span></h3>
+        <div class="input-group"><label><span data-hi="आइटम नाम">आइटम नाम</span></label><input id="editName" value="${item.name.replace(/"/g, '&quot;')}"></div>
+        <div class="input-group"><label><span data-hi="मॉडल नंबर">मॉडल नंबर</span></label><input id="editModel" value="${item.model || ''}"></div>
+        <div class="input-group"><label><span data-hi="डिस्क्रिप्शन">डिस्क्रिप्शन</span></label><textarea id="editDesc" rows="2">${item.desc || ''}</textarea></div>
+        <div class="input-group"><label><span data-hi="परचेज प्राइस">परचेज प्राइस</span></label><input id="editPurchase" type="number" value="${item.purchase}"></div>
+        <div class="input-group"><label><span data-hi="सेलिंग प्राइस">सेलिंग प्राइस</span></label><input id="editSelling" type="number" value="${item.selling}"></div>
+        <div class="input-group"><label><span data-hi="क्वांटिटी (स्टॉक)">क्वांटिटी (स्टॉक)</span></label><input id="editQty" type="number" value="${item.qty}"></div>
+        <div style="display:flex; gap:10px; margin-top:20px;">
+          <button onclick="saveStockFullEdit('${item.id}')" style="flex:1; background:#2e7d32;"><i class="fas fa-save"></i> <span data-hi="सेव करें">सेव करें</span><span data-en="Save">Save</span></button>
+          <button onclick="this.closest('.edit-form-popup').remove()" style="flex:1; background:#666;"><i class="fas fa-times"></i> <span data-hi="रद्द करें">रद्द करें</span><span data-en="Cancel">Cancel</span></button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(popup);
+  };
+  
+  window.saveStockFullEdit = function(id) {
+    let item = products.find(p => p.id === id);
+    if(item) {
+      item.name = document.getElementById('editName').value;
+      item.model = document.getElementById('editModel').value;
+      item.desc = document.getElementById('editDesc').value;
+      item.purchase = parseFloat(document.getElementById('editPurchase').value);
+      item.selling = parseFloat(document.getElementById('editSelling').value);
+      item.qty = parseInt(document.getElementById('editQty').value);
+      saveAllData();
+      document.querySelector('.edit-form-popup')?.remove();
+      renderStockPage();
+      alert(currentLang === 'hi' ? "आइटम अपडेट हो गया!" : "Item updated!");
+    }
+  };
+  
+  window.viewStockItemDetail = function(item) {
+    let popup = document.createElement('div');
+    popup.className = 'detail-popup';
+    popup.innerHTML = `
+      <div class="popup-content">
+        <h3 style="color:#ffb347; margin-bottom:15px;"><i class="fas fa-box"></i> <span data-hi="आइटम विवरण">आइटम विवरण</span><span data-en="Item Details">Item Details</span></h3>
+        <div class="detail-row"><span class="detail-label"><i class="fas fa-tag"></i> <span data-hi="नाम">नाम</span>:</span><span class="detail-value">${item.name}</span></div>
+        <div class="detail-row"><span class="detail-label"><i class="fas fa-barcode"></i> <span data-hi="मॉडल">मॉडल</span>:</span><span class="detail-value">${item.model || '-'}</span></div>
+        <div class="detail-row"><span class="detail-label"><i class="fas fa-align-left"></i> <span data-hi="डिस्क्रिप्शन">डिस्क्रिप्शन</span>:</span><span class="detail-value">${item.desc || '-'}</span></div>
+        <div class="detail-row"><span class="detail-label"><i class="fas fa-tag"></i> <span data-hi="सेलिंग प्राइस">सेलिंग प्राइस</span>:</span><span class="detail-value">₹${item.selling}</span></div>
+        <div class="detail-row"><span class="detail-label"><i class="fas fa-cubes"></i> <span data-hi="स्टॉक">स्टॉक</span>:</span><span class="detail-value">${item.qty}</span></div>
+        ${item.photo ? `<div class="detail-row"><span class="detail-label"><i class="fas fa-camera"></i> <span data-hi="फोटो">फोटो</span>:</span><span class="detail-value"><img src="${item.photo}" style="width:80px; border-radius:8px;"></span></div>` : ''}
+        <button onclick="this.closest('.detail-popup').remove()" style="margin-top:15px; width:100%;"><i class="fas fa-times"></i> <span data-hi="बंद करें">बंद करें</span><span data-en="Close">Close</span></button>
+      </div>
+    `;
+    document.body.appendChild(popup);
+  };
+  
+  function renderStockPage() {
+    let stockList = products.map(p=>`
+      <tr>
+        <td>${p.name}</td>
+        <td>${p.model||'-'}</td>
+        <td>₹${p.selling}</td>
+        <td>${p.qty}</td>
+        <td>
+          <button onclick="viewStockItemDetail(${JSON.stringify(p).replace(/"/g, '&quot;')})" class="view-btn" style="padding:6px 12px;"><i class="fas fa-eye"></i> <span data-hi="देखें">देखें</span></button>
+          <button onclick="editStockFullForm(${JSON.stringify(p).replace(/"/g, '&quot;')})" class="edit-btn" style="padding:6px 12px;"><i class="fas fa-edit"></i> <span data-hi="एडिट">एडिट</span></button>
+          <button onclick="deleteStockItemWithTimer('${p.id}', '${p.name}')" class="delete-btn" style="padding:6px 12px;"><i class="fas fa-trash"></i> <span data-hi="डिलीट">डिलीट</span></button>
+        </td>
+      </tr>
+    `).join('');
+    
+    document.getElementById("dynamicContent").innerHTML = `
+      <div class="page-container">
+        <div class="form-header">
+          <button class="home-btn" onclick="goToHome()"><i class="fas fa-home"></i> <span data-hi="होम">होम</span><span data-en="Home">Home</span></button>
+          <h2 style="border-left: none; margin:0;"><span data-hi="📦 स्टॉक प्रबंधन">📦 स्टॉक प्रबंधन</span><span data-en="📦 Stock Management">📦 Stock Management</span></h2>
+        </div>
+        <div class="form-card">
+          <h3><span data-hi="नया आइटम जोड़ें">नया आइटम जोड़ें</span><span data-en="Add New Item">Add New Item</span></h3>
+          <div class="photo-box" id="stockPhotoPreview" onclick="selectPhotoForStock()"><i class="fas fa-camera" style="font-size:40px; color:#999;"></i><br><span style="font-size:11px;"><span data-hi="फोटो लोड करें">फोटो लोड करें</span><span data-en="Load Photo">Load Photo</span></span></div>
+          <div class="input-group"><label><span data-hi="आइटम नाम">आइटम नाम</span><span data-en="Item Name">Item Name</span></label><input id="stockName" placeholder="Item name"></div>
+          <div class="input-group"><label><span data-hi="मॉडल नंबर">मॉडल नंबर</span><span data-en="Model Number">Model Number</span></label><input id="stockModel" placeholder="Model"></div>
+          <div class="input-group"><label><span data-hi="डिस्क्रिप्शन">डिस्क्रिप्शन</span><span data-en="Description">Description</span></label><textarea id="stockDesc" rows="2"></textarea></div>
+          <div class="input-group"><label><span data-hi="परचेज प्राइस">परचेज प्राइस</span><span data-en="Purchase Price">Purchase Price</span></label><input id="stockPurchase" type="number" placeholder="Purchase price"></div>
+          <div class="input-group"><label><span data-hi="सेलिंग प्राइस">सेलिंग प्राइस</span><span data-en="Selling Price">Selling Price</span></label><input id="stockSelling" type="number" placeholder="Selling price"></div>
+          <div class="input-group"><label><span data-hi="क्वांटिटी">क्वांटिटी</span><span data-en="Quantity">Quantity</span></label><input id="stockQty" type="number" placeholder="Quantity"></div>
+          <button onclick="saveNewStockItem()"><i class="fas fa-save"></i> <span data-hi="आइटम सेव करें">आइटम सेव करें</span><span data-en="Save Item">Save Item</span></button>
+        </div>
+        <h3><span data-hi="स्टॉक लिस्ट">स्टॉक लिस्ट</span><span data-en="Stock List">Stock List</span></h3>
+        <div class="table-wrapper">
+          <table style="width:100%">
+            <thead>
+              <tr style="background:#ffb34720;">
+                <th><i class="fas fa-tag"></i> <span data-hi="नाम">नाम</span></th>
+                <th><i class="fas fa-barcode"></i> <span data-hi="मॉडल">मॉडल</span></th>
+                <th><i class="fas fa-rupee-sign"></i> <span data-hi="कीमत">कीमत</span></th>
+                <th><i class="fas fa-cubes"></i> <span data-hi="स्टॉक">स्टॉक</span></th>
+                <th><i class="fas fa-cogs"></i> <span data-hi="एक्शन">एक्शन</span></th>
+              </tr>
+            </thead>
+            <tbody>${stockList}</tbody>
+          </table>
+        </div>
+      </div>
+    `;
+  }
+  
+  window.deleteStockItemWithTimer = function(id, name) {
+    startDeleteTimer(id, 'stock', name, () => {
+      products = products.filter(p => p.id !== id);
+      saveAllData();
+      renderStockPage();
+      alert(currentLang === 'hi' ? `"${name}" डिलीट हो गया!` : `"${name}" deleted!`);
+    });
+  };
+
+  // ==================== REPAIR PAGE (WITH DATE) ====================
+  let repairItems = [];
+  
+  window.pickContactForRepair = function() {
+    if('contacts' in navigator && navigator.contacts) {
+      navigator.contacts.select(['name', 'tel'], { multiple: false })
+        .then(contacts => { if(contacts.length) {
+          document.getElementById('repCustName').value = contacts[0].name[0] || '';
+          document.getElementById('repMobile').value = contacts[0].tel[0] || '';
+        }}).catch(() => alert(currentLang === 'hi' ? "कॉन्टैक्ट एक्सेस नहीं हुआ" : "Contact access failed"));
+    } else alert(currentLang === 'hi' ? "कॉन्टैक्ट पिकर सपोर्ट नहीं" : "Contact picker not supported");
+  };
+  
+  window.addRepairItem = function() {
+    let name = prompt(currentLang === 'hi' ? "स्पेयर पार्ट का नाम" : "Part name");
+    let purchase = parseFloat(prompt(currentLang === 'hi' ? "परचेज प्राइस" : "Purchase price"));
+    let selling = parseFloat(prompt(currentLang === 'hi' ? "सेलिंग प्राइस" : "Selling price"));
+    if(name) repairItems.push({ name, purchase, selling });
+    renderRepairPage();
+  };
+  window.saveRepair = function() {
+    let cust = document.getElementById('repCustName').value;
+    let mobile = document.getElementById('repMobile').value;
+    let brand = document.getElementById('repBrand').value;
+    let model = document.getElementById('repModel').value;
+    let problem = document.getElementById('repProblem').value;
+    let status = document.getElementById('repStatus').value;
+    let paid = parseFloat(document.getElementById('repPaid').value) || 0;
+    let totalParts = repairItems.reduce((s,i)=>s+i.selling,0);
+    let due = totalParts - paid;
+    let repairDate = document.getElementById('repairDate').value;
+    if(!cust) return alert(currentLang === 'hi' ? "ग्राहक नाम जरूरी" : "Customer name required");
+    repairJobs.push({ id: "R"+Date.now(), customer: cust, mobile, brand, model, problem, status, items: [...repairItems], total: totalParts, paid: paid, due: due, date: repairDate });
+    repairItems = [];
+    saveAllData();
+    renderRepairPage();
+    alert(currentLang === 'hi' ? "रिपेयर जॉब सेव!" : "Repair job saved!");
+  };
+  
+  function renderRepairPage() {
+    let itemsHtml = repairItems.map((it,i)=>`<tr>
+        <td>${it.name}</td>
+        <td>₹${it.purchase}</td>
+        <td>₹${it.selling}</td>
+      </tr>`).join('');
+    let totalParts = repairItems.reduce((s,i)=>s+i.selling,0);
+    let jobList = repairJobs.map(j=>`<tr>
+        <td>${j.customer}</td>
+        <td>${j.mobile}</td>
+        <td>${j.brand}</td>
+        <td>${j.status}</td>
+        <td>₹${j.total}</td>
+        <td>₹${j.paid || 0}</td>
+        <td>₹${j.due}</td>
+        <td>${j.date || '-'}</td>
+      </tr>`).join('');
+    document.getElementById("dynamicContent").innerHTML = `
+      <div class="page-container">
+        <div class="form-header">
+          <button class="home-btn" onclick="goToHome()"><i class="fas fa-home"></i> <span data-hi="होम">होम</span><span data-en="Home">Home</span></button>
+          <h2 style="border-left: none; margin:0;"><span data-hi="🔧 रिपेयरिंग जॉब">🔧 रिपेयरिंग जॉब</span><span data-en="🔧 Repairing Job">🔧 Repairing Job</span></h2>
+        </div>
+        <div class="form-card">
+          <div class="input-group"><label><span data-hi="ग्राहक नाम">ग्राहक नाम</span><span data-en="Customer Name">Customer Name</span></label><input id="repCustName" placeholder="Name"></div>
+          <div class="input-group"><label><span data-hi="मोबाइल">मोबाइल</span><span data-en="Mobile">Mobile</span></label><div class="contact-row"><input type="tel" id="repMobile" placeholder="9876543210"><div class="contact-picker" onclick="pickContactForRepair()"><i class="fas fa-address-book"></i> <span data-hi="कॉन्टैक्ट">कॉन्टैक्ट</span><span data-en="Contact">Contact</span></div></div></div>
+          <div class="input-group"><label><span data-hi="मोबाइल ब्रांड">मोबाइल ब्रांड</span><span data-en="Brand">Brand</span></label><input id="repBrand" placeholder="Brand"></div>
+          <div class="input-group"><label><span data-hi="मॉडल नंबर">मॉडल नंबर</span><span data-en="Model">Model</span></label><input id="repModel" placeholder="Model"></div>
+          <div class="input-group"><label><span data-hi="प्रॉब्लम">प्रॉब्लम</span><span data-en="Problem">Problem</span></label><textarea id="repProblem" rows="2"></textarea></div>
+          <div class="input-group"><label><span data-hi="तारीख">तारीख</span><span data-en="Date">Date</span></label><input type="date" id="repairDate" value="${getToday()}"></div>
+          <button onclick="addRepairItem()"><i class="fas fa-plus"></i> <span data-hi="ऐड आइटम">ऐड आइटम</span><span data-en="Add Part">Add Part</span></button>
+          <div class="table-wrapper"><table><thead><tr><th><span data-hi="पार्ट">पार्ट</span><span data-en="Part">Part</span></th><th><span data-hi="परचेज">परचेज</span><span data-en="Purchase">Purchase</span></th><th><span data-hi="सेलिंग">सेलिंग</span><span data-en="Selling">Selling</span></th></tr></thead><tbody>${itemsHtml}</tbody></td></div>
+          <div class="input-group"><label><span data-hi="टोटल अमाउंट">टोटल अमाउंट</span><span data-en="Total Amount">Total Amount</span></label><input value="₹${totalParts}" readonly></div>
+          <div class="input-group"><label><span data-hi="पेड अमाउंट">पेड अमाउंट</span><span data-en="Paid Amount">Paid Amount</span></label><input id="repPaid" type="number" value="0"></div>
+          <div class="input-group"><label><span data-hi="ड्यू बैलेंस (बकाया)">ड्यू बैलेंस (बकाया)</span><span data-en="Due Balance">Due Balance</span></label><input id="repDue" value="${totalParts}" readonly></div>
+          <div class="input-group"><label><span data-hi="स्टेटस">स्टेटस</span><span data-en="Status">Status</span></label><select id="repStatus"><option>Pending</option><option>Completed</option></select></div>
+          <button onclick="saveRepair()"><i class="fas fa-save"></i> <span data-hi="जॉब सेव करें">जॉब सेव करें</span><span data-en="Save Job">Save Job</span></button>
+        </div>
+        <h3><span data-hi="रिपेयर जॉब लिस्ट">रिपेयर जॉब लिस्ट</span><span data-en="Repair Job List">Repair Job List</span></h3>
+        <div class="table-wrapper"></td><thead><tr><th><span data-hi="ग्राहक">ग्राहक</span></th><th><span data-hi="मोबाइल">मोबाइल</span></th><th><span data-hi="ब्रांड">ब्रांड</span></th><th><span data-hi="स्टेटस">स्टेटस</span></th><th><span data-hi="टोटल">टोटल</span></th><th><span data-hi="पेड">पेड</span></th><th><span data-hi="बकाया">बकाया</span></th><th><span data-hi="तारीख">तारीख</span></th></tr></thead><tbody>${jobList||'<tr><td colspan="8">' + (currentLang === 'hi' ? 'कोई जॉब नहीं' : 'No jobs') + '<\/td><\/tr>'}</tbody></td></div>
+      </div>
+    `;
+    let paidInput = document.getElementById('repPaid');
+    if(paidInput) paidInput.oninput = function() { let due = totalParts - (parseInt(this.value)||0); document.getElementById('repDue').value = due; };
+  }
+
+  // ==================== REPORT SECTION ====================
+  function getBillingTotal() {
+    return invoices.reduce((sum, inv) => sum + (inv.total || 0), 0);
+  }
+  
+  function getBillingTotalDue() {
+    return invoices.reduce((sum, inv) => {
+      let due = (inv.total || 0) - (inv.paid || 0);
+      return sum + Math.max(0, due);
+    }, 0);
+  }
+  
+  function getRepairTotal() {
+    return repairJobs.reduce((sum, job) => sum + (job.total || 0), 0);
+  }
+  
+  function getRepairTotalDue() {
+    return repairJobs.reduce((sum, job) => sum + (job.due || 0), 0);
+  }
+  
+  function getAllReportData() {
+    let allItems = [];
+    
+    invoices.forEach(inv => {
+      let due = (inv.total || 0) - (inv.paid || 0);
+      allItems.push({
+        id: inv.id,
+        type: 'बिलिंग',
+        customer: inv.customer,
+        description: inv.items ? inv.items.map(i => i.name).join(', ') : 'बिल आइटम',
+        amount: inv.total || 0,
+        paid: inv.paid || 0,
+        due: Math.max(0, due),
+        date: inv.date,
+        mobile: inv.mobile,
+        items: inv.items || []
+      });
+    });
+    
+    repairJobs.forEach(job => {
+      allItems.push({
+        id: job.id,
+        type: 'रिपेयर',
+        customer: job.customer,
+        description: job.device || job.brand + ' ' + job.model,
+        amount: job.total || 0,
+        paid: job.paid || 0,
+        due: job.due || 0,
+        date: job.date || '-',
+        mobile: job.mobile,
+        problem: job.problem,
+        status: job.status,
+        items: job.items || []
+      });
+    });
+    
+    return allItems;
+  }
+  
+  window.addPayment = function(item) {
+    let popup = document.createElement('div');
+    popup.className = 'edit-form-popup';
+    popup.innerHTML = `
+      <div class="edit-form-content">
+        <h3 style="color:#ffb347;">💰 <span data-hi="भुगतान जोड़ें">भुगतान जोड़ें</span><span data-en="Add Payment">Add Payment</span></h3>
+        <div class="detail-row"><span class="detail-label"><i class="fas fa-user"></i> <span data-hi="ग्राहक">ग्राहक</span>:</span><span class="detail-value">${item.customer}</span></div>
+        <div class="detail-row"><span class="detail-label"><i class="fas fa-exclamation-triangle"></i> <span data-hi="कुल बकाया">कुल बकाया</span>:</span><span class="detail-value" style="color:red;">₹${item.due}</span></div>
+        <div class="input-group"><label><i class="fas fa-rupee-sign"></i> <span data-hi="भुगतान राशि">भुगतान राशि</span><span data-en="Payment Amount">Payment Amount</span></label><input type="number" id="paymentAmount" placeholder="₹" value="${item.due}"></div>
+        <div style="display:flex; gap:10px; margin-top:20px;">
+          <button onclick="processPayment('${item.id}', '${item.type}')" style="flex:1; background:#2e7d32;"><i class="fas fa-check"></i> <span data-hi="भुगतान करें">भुगतान करें</span></button>
+          <button onclick="this.closest('.edit-form-popup').remove()" style="flex:1; background:#666;"><i class="fas fa-times"></i> <span data-hi="रद्द करें">रद्द करें</span></button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(popup);
+  };
+  
+  window.processPayment = function(id, type) {
+    let amount = parseFloat(document.getElementById('paymentAmount').value);
+    if(isNaN(amount) || amount <= 0) {
+      alert(currentLang === 'hi' ? "सही राशि डालें" : "Enter valid amount");
+      return;
+    }
+    
+    if(type === 'बिलिंग') {
+      let bill = invoices.find(i => i.id === id);
+      if(bill) {
+        let newPaid = (bill.paid || 0) + amount;
+        if(newPaid > bill.total) newPaid = bill.total;
+        bill.paid = newPaid;
+        alert(currentLang === 'hi' ? `₹${amount} का भुगतान हो गया! नया बकाया: ₹${bill.total - newPaid}` : `Payment of ₹${amount} successful! New due: ₹${bill.total - newPaid}`);
+      }
+    } else if(type === 'रिपेयर') {
+      let job = repairJobs.find(r => r.id === id);
+      if(job) {
+        let newPaid = (job.paid || 0) + amount;
+        if(newPaid > job.total) newPaid = job.total;
+        job.paid = newPaid;
+        job.due = job.total - newPaid;
+        alert(currentLang === 'hi' ? `₹${amount} का भुगतान हो गया! नया बकाया: ₹${job.due}` : `Payment of ₹${amount} successful! New due: ₹${job.due}`);
+      }
+    }
+    
+    saveAllData();
+    document.querySelector('.edit-form-popup')?.remove();
+    renderReportPage();
+  };
+  
+  window.sendWhatsAppReminder = function(item) {
+    let phone = item.mobile;
+    if(!phone) {
+      alert(currentLang === 'hi' ? "ग्राहक का मोबाइल नंबर नहीं है" : "Customer mobile number not available");
+      return;
+    }
+    
+    phone = phone.toString().replace(/\D/g, '');
+    if(phone.startsWith('0')) phone = phone.substring(1);
+    if(!phone.startsWith('91')) phone = '91' + phone;
+    
+    let itemsList = '';
+    if(item.items && item.items.length > 0) {
+      itemsList = item.items.map(i => `• ${i.name} (₹${i.price || i.selling || 0} × ${i.qty || 1})`).join('\n');
+    }
+    
+    let message = `🏪 *SUNNY SYSTEM* 🏪
+    
+*ग्राहक सूचना - बकाया रिमाइंडर*
+
+👤 *ग्राहक नाम:* ${item.customer}
+📞 *मोबाइल:* ${item.mobile}
+📋 *प्रकार:* ${item.type}
+
+${itemsList ? `📦 *आइटम विवरण:*\n${itemsList}\n` : ''}
+💰 *कुल राशि:* ₹${item.amount}
+💵 *भुगतान:* ₹${item.paid}
+⚠️ *बकाया राशि:* ₹${item.due}
+
+🙏 कृपया जल्द से जल्द भुगतान करें।
+धन्यवाद!
+- SUNNY SYSTEM`;
+    
+    let encodedMsg = encodeURIComponent(message);
+    window.open(`https://wa.me/${phone}?text=${encodedMsg}`, '_blank');
+  };
+  
+  window.viewReportDetail = function(item) {
+    let popup = document.createElement('div');
+    popup.className = 'detail-popup';
+    let itemsHtml = '';
+    if(item.items && item.items.length > 0) {
+      itemsHtml = '<div style="margin-top:15px;"><strong><i class="fas fa-shopping-cart"></i> <span data-hi="खरीदे गए आइटम">खरीदे गए आइटम</span>:</strong><div class="table-wrapper"><table style="width:100%; margin-top:8px;"><thead><tr><th><i class="fas fa-tag"></i> <span data-hi="आइटम">आइटम</span></th><th><i class="fas fa-cubes"></i> <span data-hi="मात्रा">मात्रा</span></th><th><i class="fas fa-rupee-sign"></i> <span data-hi="कीमत">कीमत</span></th></tr></thead><tbody>' + 
+        item.items.map(it => `<tr>
+            <td>${it.name}</td>
+            <td>${it.qty || 1}</td>
+            <td>₹${it.price || it.selling || 0}</td>
+          </td>`).join('') + 
+        '</tbody></table></div></div>';
+    }
+    popup.innerHTML = `
+      <div class="popup-content">
+        <h3 style="color:#ffb347; margin-bottom:15px; text-align:center;"><i class="fas fa-info-circle"></i> <span data-hi="पूरा विवरण">पूरा विवरण</span><span data-en="Full Details">Full Details</span></h3>
+        
+        <div class="detail-row"><span class="detail-label"><i class="fas fa-tag"></i> <span data-hi="प्रकार">प्रकार</span>:</span><span class="detail-value">${item.type}</span></div>
+        <div class="detail-row"><span class="detail-label"><i class="fas fa-user"></i> <span data-hi="ग्राहक नाम">ग्राहक नाम</span>:</span><span class="detail-value">${item.customer}</span></div>
+        <div class="detail-row"><span class="detail-label"><i class="fas fa-phone"></i> <span data-hi="मोबाइल नंबर">मोबाइल नंबर</span>:</span><span class="detail-value">${item.mobile || '-'}</span></div>
+        <div class="detail-row"><span class="detail-label"><i class="fas fa-info-circle"></i> <span data-hi="विवरण">विवरण</span>:</span><span class="detail-value">${item.description}</span></div>
+        ${item.date ? `<div class="detail-row"><span class="detail-label"><i class="fas fa-calendar-alt"></i> <span data-hi="तारीख">तारीख</span>:</span><span class="detail-value">${item.date}</span></div>` : ''}
+        ${item.problem ? `<div class="detail-row"><span class="detail-label"><i class="fas fa-wrench"></i> <span data-hi="प्रॉब्लम">प्रॉब्लम</span>:</span><span class="detail-value">${item.problem}</span></div>` : ''}
+        ${item.status ? `<div class="detail-row"><span class="detail-label"><i class="fas fa-flag-checkered"></i> <span data-hi="स्टेटस">स्टेटस</span>:</span><span class="detail-value">${item.status}</span></div>` : ''}
+        ${itemsHtml}
+        <div class="detail-row"><span class="detail-label"><i class="fas fa-chart-line"></i> <span data-hi="कुल राशि">कुल राशि</span>:</span><span class="detail-value" style="font-weight:bold;">₹${item.amount}</span></div>
+        <div class="detail-row"><span class="detail-label"><i class="fas fa-money-bill-wave"></i> <span data-hi="पेड राशि">पेड राशि</span>:</span><span class="detail-value">₹${item.paid}</span></div>
+        <div class="detail-row"><span class="detail-label"><i class="fas fa-exclamation-triangle"></i> <span data-hi="बकाया राशि">बकाया राशि</span>:</span><span class="detail-value" style="color:${item.due > 0 ? 'red' : 'green'}; font-weight:bold;">₹${item.due}</span></div>
+        
+        <div style="display:flex; gap:10px; margin-top:20px; flex-wrap:wrap;">
+          <button onclick="addPayment(${JSON.stringify(item).replace(/"/g, '&quot;')})" class="pay-btn" style="flex:1;"><i class="fas fa-rupee-sign"></i> <span data-hi="भुगतान करें">भुगतान करें</span></button>
+          <button onclick="sendWhatsAppReminder(${JSON.stringify(item).replace(/"/g, '&quot;')})" style="flex:1; background:#25D366;"><i class="fab fa-whatsapp"></i> <span data-hi="WhatsApp भेजें">WhatsApp भेजें</span></button>
+          <button onclick="this.closest('.detail-popup').remove()" style="flex:1; background:#666;"><i class="fas fa-times"></i> <span data-hi="बंद करें">बंद करें</span></button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(popup);
+  };
+  
+  window.deleteReportItem = function(id, type, name) {
+    startDeleteTimer(id, type === 'बिलिंग' ? 'billing' : 'repair', name, () => {
+      if(type === 'बिलिंग') {
+        invoices = invoices.filter(i => i.id !== id);
+      } else {
+        repairJobs = repairJobs.filter(r => r.id !== id);
+      }
+      saveAllData();
+      renderReportPage();
+      alert(currentLang === 'hi' ? `"${name}" डिलीट हो गया!` : `"${name}" deleted!`);
+    });
+  };
+  
+  function renderReportPage() {
+    let billingTotal = getBillingTotal();
+    let billingDue = getBillingTotalDue();
+    let repairTotal = getRepairTotal();
+    let repairDue = getRepairTotalDue();
+    let grandTotal = billingTotal + repairTotal;
+    let grandDue = billingDue + repairDue;
+    
+    let allData = getAllReportData();
+    
+    let reportList = allData.map(item => `
+      <tr>
+        <td>${item.type}</td>
+        <td>${item.customer}</td>
+        <td>${item.description.substring(0, 25)}${item.description.length > 25 ? '...' : ''}</td>
+        ${item.date ? `<td>${item.date}</td>` : '<td>-</td>'}
+        <td style="font-weight:bold;">₹${item.amount}</td>
+        <td style="font-weight:bold;">₹${item.paid}</td>
+        <td style="color:${item.due > 0 ? 'red' : 'green'}; font-weight:bold;">₹${item.due}</td>
+        <td>
+          <button class="view-btn" onclick="viewReportDetail(${JSON.stringify(item).replace(/"/g, '&quot;')})" style="padding:4px 8px;"><i class="fas fa-eye"></i> <span data-hi="देखें">देखें</span></button>
+          <button class="pay-btn" onclick="addPayment(${JSON.stringify(item).replace(/"/g, '&quot;')})" style="padding:4px 8px; background:#2e7d32;"><i class="fas fa-rupee-sign"></i> <span data-hi="भुगतान">भुगतान</span></button>
+          <button onclick="sendWhatsAppReminder(${JSON.stringify(item).replace(/"/g, '&quot;')})" style="padding:4px 8px; background:#25D366;"><i class="fab fa-whatsapp"></i> <span data-hi="WhatsApp">WhatsApp</span></button>
+          <button class="delete-btn" onclick="deleteReportItem('${item.id}', '${item.type}', '${item.customer}')" style="padding:4px 8px;"><i class="fas fa-trash"></i> 10s</button>
+          <button class="quick-delete-btn" onclick="quickDeleteNow('${item.id}', '${item.type === 'बिलिंग' ? 'billing' : 'repair'}')" style="padding:4px 8px;"><i class="fas fa-bolt"></i> <span data-hi="अभी">अभी</span></button>
+        </td>
+      </tr>
+    `).join('');
+    
+    document.getElementById("dynamicContent").innerHTML = `
+      <div class="page-container">
+        <div class="form-header">
+          <button class="home-btn" onclick="goToHome()"><i class="fas fa-home"></i> <span data-hi="होम">होम</span><span data-en="Home">Home</span></button>
+          <h2 style="border-left: none; margin:0;"><i class="fas fa-chart-pie"></i> <span data-hi="रिपोर्ट सेक्शन">रिपोर्ट सेक्शन</span><span data-en="Report Section">Report Section</span></h2>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-bottom: 20px;">
+          <div class="form-card" style="background: linear-gradient(145deg, #e8f5e9, #c8e6c9); text-align: center;">
+            <div><strong><i class="fas fa-chart-line"></i> <span data-hi="कुल बिक्री">कुल बिक्री</span><span data-en="Total Sales">Total Sales</span></strong></div>
+            <div style="font-size: 22px; font-weight: bold; color: #2e7d32;">₹${grandTotal}</div>
+            <div style="font-size: 11px;">(बिलिंग: ₹${billingTotal} + रिपेयर: ₹${repairTotal})</div>
+          </div>
+          <div class="form-card" style="background: linear-gradient(145deg, #ffebee, #ffcdd2); text-align: center;">
+            <div><strong><i class="fas fa-exclamation-triangle"></i> <span data-hi="कुल बकाया">कुल बकाया</span><span data-en="Total Due">Total Due</span></strong></div>
+            <div style="font-size: 22px; font-weight: bold; color: #c62828;">₹${grandDue}</div>
+            <div style="font-size: 11px;">(बिलिंग: ₹${billingDue} + रिपेयर: ₹${repairDue})</div>
+          </div>
+          <div class="form-card" style="background: linear-gradient(145deg, #e3f2fd, #bbdef5); text-align: center;">
+            <div><strong><i class="fas fa-list"></i> <span data-hi="कुल एंट्री">कुल एंट्री</span><span data-en="Total Entries">Total Entries</span></strong></div>
+            <div style="font-size: 22px; font-weight: bold; color: #1565c0;">${allData.length}</div>
+            <div style="font-size: 11px;">(बिलिंग: ${invoices.length} + रिपेयर: ${repairJobs.length})</div>
+          </div>
+        </div>
+        
+        <div class="form-card" style="background: #fff8e1;">
+          <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 10px;">
+            <strong><i class="fas fa-table"></i> <span data-hi="सभी लेनदेन की सूची">सभी लेनदेन की सूची</span><span data-en="All Transactions List">All Transactions List</span></strong>
+            <span style="font-size: 11px;"><i class="fas fa-eye"></i> <span data-hi="देखें">देखें</span> | <i class="fas fa-rupee-sign"></i> <span data-hi="भुगतान">भुगतान</span> | <i class="fab fa-whatsapp"></i> WhatsApp | <i class="fas fa-trash"></i> <span data-hi="डिलीट">डिलीट</span></span>
+          </div>
+        </div>
+        
+        <div class="table-wrapper">
+          <table style="width:100%">
+            <thead>
+              <tr style="background:#ffb34720;">
+                <th><i class="fas fa-tag"></i> <span data-hi="प्रकार">प्रकार</span></th>
+                <th><i class="fas fa-user"></i> <span data-hi="ग्राहक">ग्राहक</span></th>
+                <th><i class="fas fa-info-circle"></i> <span data-hi="विवरण">विवरण</span></th>
+                <th><i class="fas fa-calendar"></i> <span data-hi="तारीख">तारीख</span></th>
+                <th><i class="fas fa-chart-line"></i> <span data-hi="कुल राशि">कुल राशि</span></th>
+                <th><i class="fas fa-money-bill"></i> <span data-hi="पेड">पेड</span></th>
+                <th><i class="fas fa-exclamation-triangle"></i> <span data-hi="बकाया">बकाया</span></th>
+                <th><i class="fas fa-cogs"></i> <span data-hi="एक्शन">एक्शन</span></th>
+              </tr>
+            </thead>
+            <tbody>${reportList || '<tr><td colspan="8" style="text-align:center;">' + (currentLang === 'hi' ? 'कोई डेटा नहीं - कृपया बिलिंग या रिपेयर में एंट्री करें' : 'No data - Please add entries in Billing or Repair') + '<\/td><\/tr>'}</tbody>
+          </table>
+        </div>
+        
+        <div class="form-card" style="margin-top: 16px; background: #e8eaf6; text-align: center;">
+          <small><i class="fas fa-info-circle"></i> <span data-hi="यह रिपोर्ट बिलिंग और रिपेयरिंग जॉब सेक्शन के सभी डेटा को एक साथ दिखाती है। नया डेटा जोड़ने के लिए कृपया बिलिंग या रिपेयर सेक्शन का उपयोग करें।">यह रिपोर्ट बिलिंग और रिपेयरिंग जॉब सेक्शन के सभी डेटा को एक साथ दिखाती है। नया डेटा जोड़ने के लिए कृपया बिलिंग या रिपेयर सेक्शन का उपयोग करें。</span><span data-en="This report shows all data from Billing and Repairing Job sections combined. To add new data, please use Billing or Repair section.">This report shows all data from Billing and Repairing Job sections combined. To add new data, please use Billing or Repair section.</span></small>
+        </div>
+      </div>
+    `;
+  }
+
+  // ==================== SEARCH PAGE (WITH DATE WISE SEARCH) ====================
+  let searchActiveTab = 'stock';
+  
+  window.viewStockItem = function(item) {
+    let popup = document.createElement('div');
+    popup.className = 'detail-popup';
+    popup.innerHTML = `
+      <div class="popup-content">
+        <h3 style="color:#ffb347; margin-bottom:15px;"><i class="fas fa-box"></i> <span data-hi="आइटम विवरण">आइटम विवरण</span><span data-en="Item Details">Item Details</span></h3>
+        <div class="detail-row"><span class="detail-label"><i class="fas fa-tag"></i> <span data-hi="नाम">नाम</span>:</span><span class="detail-value">${item.name}</span></div>
+        <div class="detail-row"><span class="detail-label"><i class="fas fa-barcode"></i> <span data-hi="मॉडल">मॉडल</span>:</span><span class="detail-value">${item.model || '-'}</span></div>
+        <div class="detail-row"><span class="detail-label"><i class="fas fa-align-left"></i> <span data-hi="डिस्क्रिप्शन">डिस्क्रिप्शन</span>:</span><span class="detail-value">${item.desc || '-'}</span></div>
+        <div class="detail-row"><span class="detail-label"><i class="fas fa-tag"></i> <span data-hi="सेलिंग प्राइस">सेलिंग प्राइस</span>:</span><span class="detail-value">₹${item.selling}</span></div>
+        <div class="detail-row"><span class="detail-label"><i class="fas fa-cubes"></i> <span data-hi="स्टॉक">स्टॉक</span>:</span><span class="detail-value">${item.qty}</span></div>
+        ${item.photo ? `<div class="detail-row"><span class="detail-label"><i class="fas fa-camera"></i> <span data-hi="फोटो">फोटो</span>:</span><span class="detail-value"><img src="${item.photo}" style="width:80px; border-radius:8px;"></span></div>` : ''}
+        <button onclick="this.closest('.detail-popup').remove()" style="margin-top:15px; width:100%;"><i class="fas fa-times"></i> <span data-hi="बंद करें">बंद करें</span><span data-en="Close">Close</span></button>
+      </div>
+    `;
+    document.body.appendChild(popup);
+  };
+  
+  window.deleteStockSearchItem = function(id, name) {
+    startDeleteTimer(id, 'stock', name, () => {
+      products = products.filter(p => p.id !== id);
+      saveAllData();
+      performStockSearch();
+      alert(currentLang === 'hi' ? `"${name}" डिलीट हो गया!` : `"${name}" deleted!`);
+    });
+  };
+  
+  window.viewBillItem = function(bill) {
+    let popup = document.createElement('div');
+    popup.className = 'detail-popup';
+    let itemsHtml = '';
+    if(bill.items && bill.items.length > 0) {
+      itemsHtml = '<div style="margin-top:15px;"><strong><i class="fas fa-shopping-cart"></i> <span data-hi="बिल आइटम">बिल आइटम</span>:</strong><div class="table-wrapper"><table style="width:100%; margin-top:8px;"><thead><tr><th><i class="fas fa-tag"></i> <span data-hi="आइटम">आइटम</span></th><th><i class="fas fa-cubes"></i> <span data-hi="मात्रा">मात्रा</span></th><th><i class="fas fa-rupee-sign"></i> <span data-hi="कीमत">कीमत</span></th><th><i class="fas fa-chart-line"></i> <span data-hi="कुल">कुल</span></th></tr></thead><tbody>' + 
+        bill.items.map(it => `<tr>
+            <td>${it.name}</td>
+            <td>${it.qty}</td>
+            <td>₹${it.price}</td>
+            <td>₹${it.total}</td>
+          </tr>`).join('') + 
+        '</tbody></table></div></div>';
+    }
+    let due = (bill.total || 0) - (bill.paid || 0);
+    popup.innerHTML = `
+      <div class="popup-content">
+        <h3 style="color:#ffb347; margin-bottom:15px;"><i class="fas fa-file-invoice"></i> <span data-hi="बिल विवरण">बिल विवरण</span><span data-en="Bill Details">Bill Details</span></h3>
+        <div class="detail-row"><span class="detail-label"><i class="fas fa-id-card"></i> <span data-hi="बिल ID">बिल ID</span>:</span><span class="detail-value">${bill.id}</span></div>
+        <div class="detail-row"><span class="detail-label"><i class="fas fa-calendar"></i> <span data-hi="तारीख">तारीख</span>:</span><span class="detail-value">${bill.date}</span></div>
+        <div class="detail-row"><span class="detail-label"><i class="fas fa-user"></i> <span data-hi="ग्राहक">ग्राहक</span>:</span><span class="detail-value">${bill.customer}</span></div>
+        <div class="detail-row"><span class="detail-label"><i class="fas fa-phone"></i> <span data-hi="मोबाइल">मोबाइल</span>:</span><span class="detail-value">${bill.mobile}</span></div>
+        ${itemsHtml}
+        <div class="detail-row"><span class="detail-label"><i class="fas fa-chart-line"></i> <span data-hi="कुल राशि">कुल राशि</span>:</span><span class="detail-value">₹${bill.total}</span></div>
+        <div class="detail-row"><span class="detail-label"><i class="fas fa-money-bill"></i> <span data-hi="पेड राशि">पेड राशि</span>:</span><span class="detail-value">₹${bill.paid || 0}</span></div>
+        <div class="detail-row"><span class="detail-label"><i class="fas fa-exclamation-triangle"></i> <span data-hi="बकाया">बकाया</span>:</span><span class="detail-value" style="color:${due > 0 ? 'red' : 'green'};">₹${due}</span></div>
+        <button onclick="this.closest('.detail-popup').remove()" style="margin-top:15px; width:100%;"><i class="fas fa-times"></i> <span data-hi="बंद करें">बंद करें</span></button>
+      </div>
+    `;
+    document.body.appendChild(popup);
+  };
+  
+  window.deleteBillingItem = function(id, name) {
+    startDeleteTimer(id, 'billing', name, () => {
+      invoices = invoices.filter(i => i.id !== id);
+      saveAllData();
+      performBillingSearch();
+      alert(currentLang === 'hi' ? `बिल "${name}" डिलीट हो गया!` : `Bill "${name}" deleted!`);
+    });
+  };
+  
+  window.viewRepairItem = function(job) {
+    let popup = document.createElement('div');
+    popup.className = 'detail-popup';
+    let itemsHtml = '';
+    if(job.items && job.items.length > 0) {
+      itemsHtml = '<div style="margin-top:15px;"><strong><i class="fas fa-tools"></i> <span data-hi="इस्तेमाल किए गए पार्ट्स">इस्तेमाल किए गए पार्ट्स</span>:</strong><div class="table-wrapper"><table style="width:100%; margin-top:8px;"><thead><tr><th><i class="fas fa-cog"></i> <span data-hi="पार्ट">पार्ट</span></th><th><i class="fas fa-rupee-sign"></i> <span data-hi="परचेज">परचेज</span></th><th><i class="fas fa-tag"></i> <span data-hi="सेलिंग">सेलिंग</span></th></tr></thead><tbody>' + 
+        job.items.map(it => `</tr>
+            <td>${it.name}</td>
+            <td>₹${it.purchase}</td>
+            <td>₹${it.selling}</td>
+          </tr>`).join('') + 
+        '</tbody></table></div></div>';
+    }
+    popup.innerHTML = `
+      <div class="popup-content">
+        <h3 style="color:#ffb347; margin-bottom:15px;"><i class="fas fa-wrench"></i> <span data-hi="रिपेयर जॉब विवरण">रिपेयर जॉब विवरण</span><span data-en="Repair Job Details">Repair Job Details</span></h3>
+        <div class="detail-row"><span class="detail-label"><i class="fas fa-user"></i> <span data-hi="ग्राहक">ग्राहक</span>:</span><span class="detail-value">${job.customer}</span></div>
+        <div class="detail-row"><span class="detail-label"><i class="fas fa-phone"></i> <span data-hi="मोबाइल">मोबाइल</span>:</span><span class="detail-value">${job.mobile}</span></div>
+        <div class="detail-row"><span class="detail-label"><i class="fas fa-industry"></i> <span data-hi="ब्रांड">ब्रांड</span>:</span><span class="detail-value">${job.brand}</span></div>
+        <div class="detail-row"><span class="detail-label"><i class="fas fa-microchip"></i> <span data-hi="मॉडल">मॉडल</span>:</span><span class="detail-value">${job.model}</span></div>
+        <div class="detail-row"><span class="detail-label"><i class="fas fa-exclamation-circle"></i> <span data-hi="प्रॉब्लम">प्रॉब्लम</span>:</span><span class="detail-value">${job.problem}</span></div>
+        <div class="detail-row"><span class="detail-label"><i class="fas fa-flag-checkered"></i> <span data-hi="स्टेटस">स्टेटस</span>:</span><span class="detail-value">${job.status}</span></div>
+        ${itemsHtml}
+        <div class="detail-row"><span class="detail-label"><i class="fas fa-chart-line"></i> <span data-hi="टोटल">टोटल</span>:</span><span class="detail-value">₹${job.total}</span></div>
+        <div class="detail-row"><span class="detail-label"><i class="fas fa-money-bill"></i> <span data-hi="पेड">पेड</span>:</span><span class="detail-value">₹${job.paid || 0}</span></div>
+        <div class="detail-row"><span class="detail-label"><i class="fas fa-exclamation-triangle"></i> <span data-hi="बकाया">बकाया</span>:</span><span class="detail-value" style="color:${job.due > 0 ? 'red' : 'green'};">₹${job.due}</span></div>
+        <div class="detail-row"><span class="detail-label"><i class="fas fa-calendar"></i> <span data-hi="तारीख">तारीख</span>:</span><span class="detail-value">${job.date || '-'}</span></div>
+        <button onclick="this.closest('.detail-popup').remove()" style="margin-top:15px; width:100%;"><i class="fas fa-times"></i> <span data-hi="बंद करें">बंद करें</span></button>
+      </div>
+    `;
+    document.body.appendChild(popup);
+  };
+  
+  window.deleteRepairItem = function(id, name) {
+    startDeleteTimer(id, 'repair', name, () => {
+      repairJobs = repairJobs.filter(r => r.id !== id);
+      saveAllData();
+      performRepairSearch();
+      alert(currentLang === 'hi' ? `जॉब "${name}" डिलीट हो गया!` : `Job "${name}" deleted!`);
+    });
+  };
+  
+  // NEW: Date Wise Repair Search Function
+  window.searchRepairByDate = function() {
+    let searchDate = document.getElementById('repairDateSearch').value;
+    if(!searchDate) {
+      alert(currentLang === 'hi' ? "कृपया कोई तारीख चुनें" : "Please select a date");
+      return;
+    }
+    
+    let results = repairJobs.filter(job => job.date === searchDate);
+    let resultHtml = '';
+    
+    if(results.length === 0) {
+      resultHtml = '<div class="form-card"><i class="fas fa-calendar-times"></i> <span data-hi="इस तारीख को कोई जॉब नहीं मिला">इस तारीख को कोई जॉब नहीं मिला</span><span data-en="No jobs found for this date">No jobs found for this date</span></div>';
+    } else {
+      resultHtml = '<div class="table-wrapper"><table style="width:100%"><thead><tr style="background:#ffb34720;"><th><i class="fas fa-user"></i> <span data-hi="ग्राहक">ग्राहक</span></th><th><i class="fas fa-phone"></i> <span data-hi="मोबाइल">मोबाइल</span></th><th><i class="fas fa-industry"></i> <span data-hi="ब्रांड">ब्रांड</span></th><th><i class="fas fa-microchip"></i> <span data-hi="मॉडल">मॉडल</span></th><th><i class="fas fa-flag-checkered"></i> <span data-hi="स्टेटस">स्टेटस</span></th><th><i class="fas fa-rupee-sign"></i> <span data-hi="राशि">राशि</span></th><th><i class="fas fa-cogs"></i> <span data-hi="एक्शन">एक्शन</span></th></tr></thead><tbody>';
+      
+      results.forEach(job => {
+        resultHtml += `<tr>
+          <td>${job.customer}</td>
+          <td>${job.mobile}</td>
+          <td>${job.brand}</td>
+          <td>${job.model}</td>
+          <td><span class="badge" style="background:${job.status === 'Completed' ? '#2e7d32' : '#ed6c02'}; color:white; padding:2px 8px; border-radius:20px;">${job.status}</span></td>
+          <td>₹${job.total}</td>
+          <td class="action-buttons">
+            <button class="view-btn" onclick="viewRepairItem(${JSON.stringify(job).replace(/"/g, '&quot;')})"><i class="fas fa-eye"></i></button>
+          </td>
+        </tr>`;
+      });
+      resultHtml += '</tbody></table></div>';
+    }
+    
+    document.getElementById('repairDateSearchResults').innerHTML = resultHtml;
+  };
+  
+  window.performStockSearch = function() {
+    let keyword = document.getElementById('stockSearchInput')?.value.toLowerCase() || '';
+    let results = products.filter(p => p.name.toLowerCase().includes(keyword) || (p.model && p.model.toLowerCase().includes(keyword)));
+    let resultHtml = '';
+    if(results.length === 0) {
+      resultHtml = '<div class="form-card"><i class="fas fa-search"></i> <span data-hi="कोई परिणाम नहीं">कोई परिणाम नहीं</span><span data-en="No results found">No results found</span></div>';
+    } else {
+      resultHtml = '<div class="table-wrapper"><table style="width:100%"><thead><tr><th><i class="fas fa-tag"></i> <span data-hi="नाम">नाम</span></th><th><i class="fas fa-barcode"></i> <span data-hi="मॉडल">मॉडल</span></th><th><i class="fas fa-rupee-sign"></i> <span data-hi="कीमत">कीमत</span></th><th><i class="fas fa-cubes"></i> <span data-hi="स्टॉक">स्टॉक</span></th><th><i class="fas fa-cogs"></i> <span data-hi="एक्शन">एक्शन</span></th></tr></thead><tbody>';
+      results.forEach(p => {
+        resultHtml += `<tr>
+          <td>${p.name}</td>
+          <td>${p.model || '-'}</td>
+          <td>₹${p.selling}</td>
+          <td>${p.qty}</td>
+          <td class="action-buttons">
+            <button class="view-btn" onclick="viewStockItem(${JSON.stringify(p).replace(/"/g, '&quot;')})"><i class="fas fa-eye"></i> <span data-hi="देखें">देखें</span></button>
+            <button class="delete-btn" onclick="deleteStockSearchItem('${p.id}', '${p.name}')"><i class="fas fa-trash"></i> 10s</button>
+            <button class="quick-delete-btn" onclick="quickDeleteNow('${p.id}', 'stock')"><i class="fas fa-bolt"></i> <span data-hi="अभी">अभी</span></button>
+          </td>
+        </tr>`;
+      });
+      resultHtml += '</tbody></table></div>';
+    }
+    let resultsDiv = document.getElementById('stockSearchResults');
+    if(resultsDiv) resultsDiv.innerHTML = resultHtml;
+  };
+  
+  window.performBillingSearch = function() {
+    let keyword = document.getElementById('billingSearchInput')?.value.toLowerCase() || '';
+    let results = invoices.filter(i => i.customer.toLowerCase().includes(keyword) || i.mobile.includes(keyword) || i.id.toLowerCase().includes(keyword));
+    let resultHtml = '';
+    if(results.length === 0) {
+      resultHtml = '<div class="form-card"><i class="fas fa-search"></i> <span data-hi="कोई बिल नहीं">कोई बिल नहीं</span><span data-en="No bills found">No bills found</span></div>';
+    } else {
+      resultHtml = '<div class="table-wrapper"><table style="width:100%"><thead><tr><th><i class="fas fa-id-card"></i> <span data-hi="बिल ID">बिल ID</span></th><th><i class="fas fa-user"></i> <span data-hi="ग्राहक">ग्राहक</span></th><th><i class="fas fa-calendar"></i> <span data-hi="तारीख">तारीख</span></th><th><i class="fas fa-rupee-sign"></i> <span data-hi="राशि">राशि</span></th><th><i class="fas fa-cogs"></i> <span data-hi="एक्शन">एक्शन</span></th><tr></thead><tbody>';
+      results.forEach(i => {
+        resultHtml += `<tr>
+          <td>${i.id}</td>
+          <td>${i.customer}</td>
+          <td>${i.date}</td>
+          <td>₹${i.total}</td>
+          <td class="action-buttons">
+            <button class="view-btn" onclick="viewBillItem(${JSON.stringify(i).replace(/"/g, '&quot;')})"><i class="fas fa-eye"></i> <span data-hi="देखें">देखें</span></button>
+            <button class="delete-btn" onclick="deleteBillingItem('${i.id}', '${i.customer}')"><i class="fas fa-trash"></i> 10s</button>
+            <button class="quick-delete-btn" onclick="quickDeleteNow('${i.id}', 'billing')"><i class="fas fa-bolt"></i> <span data-hi="अभी">अभी</span></button>
+          </td>
+        </tr>`;
+      });
+      resultHtml += '</tbody></td></div>';
+    }
+    let resultsDiv = document.getElementById('billingSearchResults');
+    if(resultsDiv) resultsDiv.innerHTML = resultHtml;
+  };
+  
+  window.performRepairSearch = function() {
+    let keyword = document.getElementById('repairSearchInput')?.value.toLowerCase() || '';
+    let results = repairJobs.filter(r => r.customer.toLowerCase().includes(keyword) || r.mobile.includes(keyword) || r.brand.toLowerCase().includes(keyword));
+    let resultHtml = '';
+    if(results.length === 0) {
+      resultHtml = '<div class="form-card"><i class="fas fa-search"></i> <span data-hi="कोई जॉब नहीं">कोई जॉब नहीं</span><span data-en="No jobs found">No jobs found</span></div>';
+    } else {
+      resultHtml = '<div class="table-wrapper"><table style="width:100%"><thead><tr><th><i class="fas fa-user"></i> <span data-hi="ग्राहक">ग्राहक</span></th><th><i class="fas fa-phone"></i> <span data-hi="मोबाइल">मोबाइल</span></th><th><i class="fas fa-industry"></i> <span data-hi="ब्रांड">ब्रांड</span></th><th><i class="fas fa-flag-checkered"></i> <span data-hi="स्टेटस">स्टेटस</span></th><th><i class="fas fa-rupee-sign"></i> <span data-hi="राशि">राशि</span></th><th><i class="fas fa-cogs"></i> <span data-hi="एक्शन">एक्शन</span></th></tr></thead><tbody>';
+      results.forEach(r => {
+        resultHtml += `<tr>
+          <td>${r.customer}</td>
+          <td>${r.mobile}</td>
+          <td>${r.brand}</td>
+          <td><span class="badge" style="background:${r.status === 'Completed' ? '#2e7d32' : '#ed6c02'}; color:white; padding:2px 8px; border-radius:20px;">${r.status}</span></td>
+          <td>₹${r.total}</td>
+          <td class="action-buttons">
+            <button class="view-btn" onclick="viewRepairItem(${JSON.stringify(r).replace(/"/g, '&quot;')})"><i class="fas fa-eye"></i> <span data-hi="देखें">देखें</span></button>
+            <button class="delete-btn" onclick="deleteRepairItem('${r.id}', '${r.customer}')"><i class="fas fa-trash"></i> 10s</button>
+            <button class="quick-delete-btn" onclick="quickDeleteNow('${r.id}', 'repair')"><i class="fas fa-bolt"></i> <span data-hi="अभी">अभी</span></button>
+          </td>
+        </tr>`;
+      });
+      resultHtml += '</tbody></table></div>';
+    }
+    let resultsDiv = document.getElementById('repairSearchResults');
+    if(resultsDiv) resultsDiv.innerHTML = resultHtml;
+  };
+  
+  function renderSearchPage() {
+    document.getElementById("dynamicContent").innerHTML = `
+      <div class="page-container">
+        <div class="form-header">
+          <button class="home-btn" onclick="goToHome()"><i class="fas fa-home"></i> <span data-hi="होम">होम</span><span data-en="Home">Home</span></button>
+          <h2 style="border-left: none; margin:0;"><i class="fas fa-search"></i> <span data-hi="स्मार्ट खोज">स्मार्ट खोज</span><span data-en="Smart Search">Smart Search</span></h2>
+        </div>
+        
+        <!-- DATE WISE REPAIR SEARCH - NEW SECTION -->
+        <div class="form-card date-search-card">
+          <h3 style="margin-bottom:10px;"><i class="fas fa-calendar-alt"></i> <span data-hi="तारीख के अनुसार रिपेयर जॉब खोजें">तारीख के अनुसार रिपेयर जॉब खोजें</span><span data-en="Search Repair Jobs by Date">Search Repair Jobs by Date</span></h3>
+          <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <input type="date" id="repairDateSearch" style="flex:2;" value="${getToday()}">
+            <button onclick="searchRepairByDate()" style="flex:1; background:#ffb347;"><i class="fas fa-search"></i> <span data-hi="खोजें">खोजें</span><span data-en="Search">Search</span></button>
+          </div>
+          <div id="repairDateSearchResults" style="margin-top:15px;"></div>
+        </div>
+        
+        <div class="search-tabs">
+          <div class="search-tab ${searchActiveTab === 'stock' ? 'active' : ''}" onclick="setSearchTab('stock')"><i class="fas fa-boxes"></i> <span data-hi="स्टॉक">स्टॉक</span><span data-en="Stock">Stock</span></div>
+          <div class="search-tab ${searchActiveTab === 'billing' ? 'active' : ''}" onclick="setSearchTab('billing')"><i class="fas fa-receipt"></i> <span data-hi="बिलिंग">बिलिंग</span><span data-en="Billing">Billing</span></div>
+          <div class="search-tab ${searchActiveTab === 'repair' ? 'active' : ''}" onclick="setSearchTab('repair')"><i class="fas fa-tools"></i> <span data-hi="रिपेयर">रिपेयर</span><span data-en="Repair">Repair</span></div>
+        </div>
+        
+        <div id="stockSearchPanel" style="display:${searchActiveTab === 'stock' ? 'block' : 'none'}">
+          <div class="form-card">
+            <div class="input-group"><label><i class="fas fa-search"></i> <span data-hi="स्टॉक में खोजें">स्टॉक में खोजें</span><span data-en="Search in Stock">Search in Stock</span></label><input type="text" id="stockSearchInput" placeholder="आइटम नाम या मॉडल..." onkeyup="performStockSearch()"></div>
+            <div id="stockSearchResults"></div>
+          </div>
+        </div>
+        <div id="billingSearchPanel" style="display:${searchActiveTab === 'billing' ? 'block' : 'none'}">
+          <div class="form-card">
+            <div class="input-group"><label><i class="fas fa-search"></i> <span data-hi="बिलिंग में खोजें">बिलिंग में खोजें</span><span data-en="Search in Billing">Search in Billing</span></label><input type="text" id="billingSearchInput" placeholder="ग्राहक नाम या मोबाइल..." onkeyup="performBillingSearch()"></div>
+            <div id="billingSearchResults"></div>
+          </div>
+        </div>
+        <div id="repairSearchPanel" style="display:${searchActiveTab === 'repair' ? 'block' : 'none'}">
+          <div class="form-card">
+            <div class="input-group"><label><i class="fas fa-search"></i> <span data-hi="रिपेयर में खोजें">रिपेयर में खोजें</span><span data-en="Search in Repair">Search in Repair</span></label><input type="text" id="repairSearchInput" placeholder="ग्राहक नाम या मोबाइल..." onkeyup="performRepairSearch()"></div>
+            <div id="repairSearchResults"></div>
+          </div>
+        </div>
+      </div>
+    `;
+    if(searchActiveTab === 'stock') performStockSearch();
+    else if(searchActiveTab === 'billing') performBillingSearch();
+    else if(searchActiveTab === 'repair') performRepairSearch();
+    // Initialize date search with today's date
+    setTimeout(() => {
+      searchRepairByDate();
+    }, 100);
+  }
+  
+  window.setSearchTab = function(tab) {
+    searchActiveTab = tab;
+    renderSearchPage();
+  };
+
+  // ==================== SETTING PAGE ====================
+  window.changeBackgroundColor = function(color) {
+    document.body.style.background = color;
+    localStorage.setItem('sunny_bg_color', color);
+  };
+  
+  window.changeFormBgColor = function(color) {
+    document.documentElement.style.setProperty('--form-bg', color);
+    localStorage.setItem('sunny_form_bg', color);
+  };
+  
+  window.changeTextColor = function(color) {
+    document.documentElement.style.setProperty('--text-color', color);
+    document.documentElement.style.setProperty('--heading-color', color);
+    localStorage.setItem('sunny_text_color', color);
+  };
+  
+  window.changeFontSizeSlider = function(value) {
+    document.documentElement.style.setProperty('--font-size', value + 'px');
+    document.body.style.fontSize = value + 'px';
+    localStorage.setItem('sunny_font_size', value);
+  };
+  
+  window.selectWallpaperFromGallery = function() {
+    let input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.onchange = (e) => {
+      let file = e.target.files[0];
+      if(file) {
+        let reader = new FileReader();
+        reader.onload = function(ev) {
+          document.body.style.backgroundImage = `url(${ev.target.result})`;
+          document.body.style.backgroundSize = 'cover';
+          document.body.style.backgroundPosition = 'center';
+          document.body.style.backgroundAttachment = 'fixed';
+          localStorage.setItem('sunny_wallpaper', ev.target.result);
+          localStorage.removeItem('sunny_bg_color');
+        };
+        reader.readAsDataURL(file);
+      }
+    };
+    input.click();
+  };
+  
+  window.removeWallpaperSetting = function() {
+    document.body.style.backgroundImage = '';
+    let savedColor = localStorage.getItem('sunny_bg_color');
+    if(savedColor) {
+      document.body.style.background = savedColor;
+    } else {
+      document.body.style.background = "var(--bg-gradient)";
+    }
+    localStorage.removeItem('sunny_wallpaper');
+  };
+  
+  function sendWhatsAppSupport() {
+    let phone = "918840297289";
+    let message = "नमस्ते, मुझे SUNNY SYSTEM ऐप के बारे में सहायता चाहिए।";
+    window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
+  }
+  
+  function renderSettingPage() {
+    let savedFontSize = localStorage.getItem('sunny_font_size') || 15;
+    document.getElementById("dynamicContent").innerHTML = `
+      <div class="page-container">
+        <div class="form-header">
+          <button class="home-btn" onclick="goToHome()"><i class="fas fa-home"></i> <span data-hi="होम">होम</span><span data-en="Home">Home</span></button>
+          <h2 style="border-left: none; margin:0;"><i class="fas fa-cog"></i> <span data-hi="सेटिंग">सेटिंग</span><span data-en="Settings">Settings</span></h2>
+        </div>
+        
+        <div class="form-card">
+          <label><i class="fas fa-palette"></i> <span data-hi="बैकग्राउंड कलर (पूरा ऐप)">बैकग्राउंड कलर (पूरा ऐप)</span><span data-en="Background Color (Full App)">Background Color (Full App)</span></label>
+          <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:8px;">
+            <div class="color-option" style="background: #101f2c;" onclick="changeBackgroundColor('#101f2c')"></div>
+            <div class="color-option" style="background: #1b4332;" onclick="changeBackgroundColor('#1b4332')"></div>
+            <div class="color-option" style="background: #0f2027;" onclick="changeBackgroundColor('#0f2027')"></div>
+            <div class="color-option" style="background: #2c3e50;" onclick="changeBackgroundColor('#2c3e50')"></div>
+            <div class="color-option" style="background: #4a2c2c;" onclick="changeBackgroundColor('#4a2c2c')"></div>
+            <div class="color-option" style="background: #1a1a2e;" onclick="changeBackgroundColor('#1a1a2e')"></div>
+            <input type="color" onchange="changeBackgroundColor(this.value)" style="width:40px; height:40px; border-radius:50%; cursor:pointer;">
+          </div>
+        </div>
+        
+        <div class="form-card">
+          <label><i class="fas fa-address-card"></i> <span data-hi="फॉर्म बैकग्राउंड कलर">फॉर्म बैकग्राउंड कलर</span><span data-en="Form Background Color">Form Background Color</span></label>
+          <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:8px;">
+            <div class="color-option" style="background: #fefaf5;" onclick="changeFormBgColor('#fefaf5')"></div>
+            <div class="color-option" style="background: #ffffff;" onclick="changeFormBgColor('#ffffff')"></div>
+            <div class="color-option" style="background: #f0f4f8;" onclick="changeFormBgColor('#f0f4f8')"></div>
+            <div class="color-option" style="background: #fff8e1;" onclick="changeFormBgColor('#fff8e1')"></div>
+            <div class="color-option" style="background: #e8eaf6;" onclick="changeFormBgColor('#e8eaf6')"></div>
+            <div class="color-option" style="background: #2d2d2d;" onclick="changeFormBgColor('#2d2d2d')"></div>
+            <input type="color" onchange="changeFormBgColor(this.value)" style="width:40px; height:40px; border-radius:50%; cursor:pointer;">
+          </div>
+        </div>
+        
+        <div class="form-card">
+          <label><i class="fas fa-font"></i> <span data-hi="टेक्स्ट/फॉन्ट कलर">टेक्स्ट/फॉन्ट कलर</span><span data-en="Text/Font Color">Text/Font Color</span></label>
+          <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:8px;">
+            <div class="color-option" style="background: #2c3e4e;" onclick="changeTextColor('#2c3e4e')"></div>
+            <div class="color-option" style="background: #000000;" onclick="changeTextColor('#000000')"></div>
+            <div class="color-option" style="background: #1a237e;" onclick="changeTextColor('#1a237e')"></div>
+            <div class="color-option" style="background: #004d40;" onclick="changeTextColor('#004d40')"></div>
+            <div class="color-option" style="background: #b71c1c;" onclick="changeTextColor('#b71c1c')"></div>
+            <div class="color-option" style="background: #ffffff;" onclick="changeTextColor('#ffffff')"></div>
+            <input type="color" onchange="changeTextColor(this.value)" style="width:40px; height:40px; border-radius:50%; cursor:pointer;">
+          </div>
+        </div>
+        
+        <div class="form-card">
+          <label><i class="fas fa-text-height"></i> <span data-hi="फॉन्ट साइज (पूरा ऐप)">फॉन्ट साइज (पूरा ऐप)</span><span data-en="Font Size (Full App)">Font Size (Full App)</span></label>
+          <div class="slider-container">
+            <span>A-</span>
+            <input type="range" id="fontSlider" min="12" max="20" value="${savedFontSize}" oninput="changeFontSizeSlider(this.value)">
+            <span>A+</span>
+          </div>
+          <span id="fontValueDisplay" style="display:inline-block; margin-left:10px;">${savedFontSize}px</span>
+        </div>
+        
+        <div class="form-card">
+          <label><i class="fas fa-image"></i> <span data-hi="वॉलपेपर (पूरे ऐप पर)">वॉलपेपर (पूरे ऐप पर)</span><span data-en="Wallpaper (Full App)">Wallpaper (Full App)</span></label>
+          <div style="display:flex; gap:8px; margin-top:8px; flex-wrap:wrap;">
+            <button onclick="selectWallpaperFromGallery()"><i class="fas fa-image"></i> <span data-hi="गैलरी से सेट करें">गैलरी से सेट करें</span><span data-en="Set from Gallery">Set from Gallery</span></button>
+            <button onclick="removeWallpaperSetting()" style="background:#b85c00;"><i class="fas fa-trash"></i> <span data-hi="हटाएं">हटाएं</span><span data-en="Remove">Remove</span></button>
+          </div>
+        </div>
+        
+        <div class="form-card">
+          <label><i class="fas fa-language"></i> <span data-hi="भाषा (Language)">भाषा (Language)</span></label>
+          <div style="display:flex; gap:8px; flex-wrap:wrap;"><button onclick="changeLanguage('hi')">हिंदी</button><button onclick="changeLanguage('en')">English</button></div>
+        </div>
+        
+        <div class="form-card">
+          <label><i class="fas fa-database"></i> <span data-hi="डाटा बैकअप/रीस्टोर">डाटा बैकअप/रीस्टोर</span><span data-en="Data Backup/Restore">Data Backup/Restore</span></label>
+          <div style="display:flex; gap:8px; flex-wrap:wrap;"><button onclick="backupData()"><i class="fas fa-download"></i> <span data-hi="बैकअप">बैकअप</span><span data-en="Backup">Backup</span></button><button onclick="restoreData()"><i class="fas fa-upload"></i> <span data-hi="रीस्टोर">रीस्टोर</span><span data-en="Restore">Restore</span></button></div>
+        </div>
+        
+        <div class="form-card">
+          <label><i class="fas fa-key"></i> <span data-hi="पासवर्ड रीसेट (OTP के साथ)">पासवर्ड रीसेट (OTP के साथ)</span><span data-en="Password Reset (with OTP)">Password Reset (with OTP)</span></label>
+          <div class="input-group"><label><i class="fas fa-phone"></i> <span data-hi="रजिस्टर्ड मोबाइल नंबर">रजिस्टर्ड मोबाइल नंबर</span><span data-en="Registered Mobile">Registered Mobile</span></label><input type="tel" id="resetPhone" placeholder="9876543210"></div>
+          <button onclick="sendOTP()"><i class="fas fa-paper-plane"></i> <span data-hi="OTP भेजें">OTP भेजें</span><span data-en="Send OTP">Send OTP</span></button>
+          <div id="otpSection" style="display:none; margin-top:12px;">
+            <div class="input-group"><label><i class="fas fa-lock"></i> <span data-hi="OTP डालें">OTP डालें</span><span data-en="Enter OTP">Enter OTP</span></label><input type="text" id="otpInput" placeholder="OTP"></div>
+            <div class="input-group"><label><i class="fas fa-key"></i> <span data-hi="नया पासवर्ड">नया पासवर्ड</span><span data-en="New Password">New Password</span></label><input type="password" id="newPassword" placeholder="नया पासवर्ड"></div>
+            <button onclick="verifyOTPAndReset()" style="background:#2e7d32;"><i class="fas fa-check"></i> <span data-hi="पासवर्ड बदलें">पासवर्ड बदलें</span><span data-en="Change Password">Change Password</span></button>
+          </div>
+        </div>
+        
+        <div class="form-card about-card">
+          <h3 style="text-align:center; margin-bottom:15px;"><i class="fas fa-info-circle"></i> <span data-hi="सिस्टम के बारे में">सिस्टम के बारे में</span><span data-en="About System">About System</span></h3>
+          <div class="detail-row" style="justify-content:center;"><span class="detail-label" style="min-width:auto;"><i class="fas fa-mobile-alt"></i> <span data-hi="सपोर्ट WhatsApp">सपोर्ट WhatsApp</span>:</span><span class="detail-value">8840297289</span></div>
+          <div class="detail-row" style="justify-content:center;"><span class="detail-label" style="min-width:auto;"><i class="fas fa-code-branch"></i> <span data-hi="संस्करण">संस्करण</span>:</span><span class="detail-value">v2.0</span></div>
+          <div class="detail-row" style="justify-content:center;"><span class="detail-label" style="min-width:auto;"><i class="fas fa-calendar"></i> <span data-hi="अंतिम अपडेट">अंतिम अपडेट</span>:</span><span class="detail-value">अप्रैल 2026</span></div>
+          <div class="detail-row" style="justify-content:center;"><span class="detail-label" style="min-width:auto;"><i class="fas fa-user-check"></i> <span data-hi="डेवलपर">डेवलपर</span>:</span><span class="detail-value">Sunny Team</span></div>
+          <div style="display:flex; justify-content:center; margin-top:15px;">
+            <button onclick="sendWhatsAppSupport()" style="background:#25D366;"><i class="fab fa-whatsapp"></i> <span data-hi="सहायता के लिए संपर्क करें">सहायता के लिए संपर्क करें</span><span data-en="Contact for Support">Contact for Support</span></button>
+          </div>
+        </div>
+      </div>
+    `;
+    let slider = document.getElementById('fontSlider');
+    if(slider) {
+      slider.addEventListener('input', function(e) {
+        document.getElementById('fontValueDisplay').innerText = e.target.value + 'px';
+      });
+    }
+  }
+
+  // ==================== COMMON FUNCTIONS ====================
+  window.changeLanguage = function(lang) { setLanguage(lang); };
+  window.backupData = function() { 
+    let data = JSON.stringify({products, invoices, repairJobs}); 
+    let a = document.createElement('a'); 
+    a.href = 'data:application/json,' + encodeURIComponent(data); 
+    a.download = 'sunny_backup.json'; 
+    a.click(); 
+  };
+  window.restoreData = function() { 
+    let input = document.createElement('input'); 
+    input.type = 'file'; 
+    input.onchange = e => { 
+      let file = e.target.files[0]; 
+      let reader = new FileReader(); 
+      reader.onload = ev => { 
+        let d = JSON.parse(ev.target.result); 
+        products = d.products || []; 
+        invoices = d.invoices || []; 
+        repairJobs = d.repairJobs || []; 
+        saveAllData(); 
+        alert(currentLang === 'hi' ? "रीस्टोर हो गया!" : "Restored!"); 
+        renderDashboard(); 
+      }; 
+      reader.readAsText(file); 
+    }; 
+    input.click(); 
+  };
+  
+  window.cancelDeleteTimer = cancelDeleteTimer;
+  window.quickDeleteNow = quickDeleteNow;
+  
+  // Load saved settings
+  let savedFontSize = localStorage.getItem('sunny_font_size');
+  if(savedFontSize) {
+    document.documentElement.style.setProperty('--font-size', savedFontSize + 'px');
+    document.body.style.fontSize = savedFontSize + 'px';
+  }
+  let savedBgColor = localStorage.getItem('sunny_bg_color');
+  if(savedBgColor) document.body.style.background = savedBgColor;
+  let savedFormBg = localStorage.getItem('sunny_form_bg');
+  if(savedFormBg) document.documentElement.style.setProperty('--form-bg', savedFormBg);
+  let savedTextColor = localStorage.getItem('sunny_text_color');
+  if(savedTextColor) {
+    document.documentElement.style.setProperty('--text-color', savedTextColor);
+    document.documentElement.style.setProperty('--heading-color', savedTextColor);
+  }
+  let savedWallpaper = localStorage.getItem('sunny_wallpaper');
+  if(savedWallpaper) {
+    document.body.style.backgroundImage = `url(${savedWallpaper})`;
+    document.body.style.backgroundSize = 'cover';
+    document.body.style.backgroundPosition = 'center';
+    document.body.style.backgroundAttachment = 'fixed';
+  }
+</script>
+  </body>
+</html>
